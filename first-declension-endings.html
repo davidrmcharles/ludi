@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>ludi / First Declension Endings</title>
+    <style>
+
+#div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+}
+
+.case-row-heading {
+    font-weight: bold;
+}
+
+.drop-target-row {
+    height: 120px;
+}
+
+.drop-target {
+    border: 1px solid black;
+    width: 200px;
+    text-align: center;
+}
+
+.draggable {
+    border: 1px solid black;
+    width: 200px;
+}
+
+    </style>
+    <script>
+
+function allowDrop(e) {
+    e.preventDefault();
+}
+
+function drag(e) {
+    e.dataTransfer.setData("text", e.target.id);
+}
+
+function drop(e) {
+    e.preventDefault();
+    var data = e.dataTransfer.getData("text");
+    e.target.appendChild(document.getElementById(data));
+}
+
+    </script>
+  </head>
+  <body>
+
+    <table>
+      <tr>
+        <th colspan="3">First Declension Endings</th>
+      </tr>
+      <tr>
+        <th/>
+        <th>Singular</th>
+        <th>Plural</th>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Nominative</td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Genitive</td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Dative</td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Accusative</td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Ablative</td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+    </table>
+
+    <span class="draggable" id="nominative-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-a</span>
+    <span class="draggable" id="genitive-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-ae</span>
+    <span class="draggable" id="dative-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-ae</span>
+    <span class="draggable" id="accusative-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-am</span>
+    <span class="draggable" id="ablative-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-a</span>
+    <span class="draggable" id="nominative-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-ae</span>
+    <span class="draggable" id="genitive-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-arum</span>
+    <span class="draggable" id="dative-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-is</span>
+    <span class="draggable" id="accusative-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-as</span>
+    <span class="draggable" id="ablative-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-is</span>
+
+  </body>
+</html>
