@@ -4,24 +4,17 @@
     <title>ludi / First Declension Endings</title>
     <style>
 
-#div1 {
-    width: 350px;
-    height: 70px;
-    padding: 10px;
-    border: 1px solid #aaaaaa;
-}
-
 .case-row-heading {
     font-weight: bold;
 }
 
 .drop-target-row {
-    height: 120px;
+    height: 60px;
 }
 
 .drop-target {
     border: 1px solid black;
-    width: 200px;
+    width: 120px;
     text-align: center;
 }
 
@@ -73,43 +66,43 @@ function drop(e) {
         <th>Plural</th>
       </tr>
       <tr class="drop-target-row">
-        <td class="case-row-heading">Nominative</td>
+        <td class="case-row-heading">Nom.</td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
       <tr class="drop-target-row">
-        <td class="case-row-heading">Genitive</td>
+        <td class="case-row-heading">Gen.</td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
       <tr class="drop-target-row">
-        <td class="case-row-heading">Dative</td>
+        <td class="case-row-heading">Dat.</td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
       <tr class="drop-target-row">
-        <td class="case-row-heading">Accusative</td>
+        <td class="case-row-heading">Acc.</td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
       <tr class="drop-target-row">
-        <td class="case-row-heading">Ablative</td>
+        <td class="case-row-heading">Abl.</td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
     </table>
 
     <div id="the-pile" style="border: 1px solid black;">
-      <span class="draggable" id="nominative-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-a</span>
-      <span class="draggable" id="genitive-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-ae</span>
-      <span class="draggable" id="dative-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-ae</span>
-      <span class="draggable" id="accusative-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-am</span>
-      <span class="draggable" id="ablative-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-a</span>
-      <span class="draggable" id="nominative-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-ae</span>
-      <span class="draggable" id="genitive-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-arum</span>
-      <span class="draggable" id="dative-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-is</span>
-      <span class="draggable" id="accusative-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-as</span>
-      <span class="draggable" id="ablative-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-is</span>
+      <span class="draggable" id="nominative-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-a</span>
+      <span class="draggable" id="genitive-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-ae</span>
+      <span class="draggable" id="dative-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-ae</span>
+      <span class="draggable" id="accusative-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-am</span>
+      <span class="draggable" id="ablative-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-a</span>
+      <span class="draggable" id="nominative-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-ae</span>
+      <span class="draggable" id="genitive-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-arum</span>
+      <span class="draggable" id="dative-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-is</span>
+      <span class="draggable" id="accusative-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-as</span>
+      <span class="draggable" id="ablative-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-is</span>
     </div>
 
   </body>
