@@ -43,8 +43,20 @@ function drag(e) {
 
 function drop(e) {
     e.preventDefault();
+
+    // A hack to find the 'root' drop target.
+    var target = e.target;
+    if (e.target.localName != "td") {
+        target = target.parentNode;
+    }
+
+    if (target.hasChildNodes()) {
+        var pile = document.getElementById("the-pile");
+        pile.appendChild(target.firstChild);
+    }
+
     var data = e.dataTransfer.getData("text");
-    e.target.appendChild(document.getElementById(data));
+    target.appendChild(document.getElementById(data));
 }
 
     </script>
@@ -87,16 +99,18 @@ function drop(e) {
       </tr>
     </table>
 
-    <span class="draggable" id="nominative-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-a</span>
-    <span class="draggable" id="genitive-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-ae</span>
-    <span class="draggable" id="dative-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-ae</span>
-    <span class="draggable" id="accusative-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-am</span>
-    <span class="draggable" id="ablative-singular" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-a</span>
-    <span class="draggable" id="nominative-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-ae</span>
-    <span class="draggable" id="genitive-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-arum</span>
-    <span class="draggable" id="dative-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-is</span>
-    <span class="draggable" id="accusative-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-as</span>
-    <span class="draggable" id="ablative-plural" style="font-size: 400%" draggable="true" ondragstart="drag(event)">-is</span>
+    <div id="the-pile" style="border: 1px solid black;">
+      <span class="draggable" id="nominative-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-a</span>
+      <span class="draggable" id="genitive-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-ae</span>
+      <span class="draggable" id="dative-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-ae</span>
+      <span class="draggable" id="accusative-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-am</span>
+      <span class="draggable" id="ablative-singular" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-a</span>
+      <span class="draggable" id="nominative-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-ae</span>
+      <span class="draggable" id="genitive-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-arum</span>
+      <span class="draggable" id="dative-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-is</span>
+      <span class="draggable" id="accusative-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-as</span>
+      <span class="draggable" id="ablative-plural" style="font-size: 48px" draggable="true" ondragstart="drag(event)">-is</span>
+    </div>
 
   </body>
 </html>
