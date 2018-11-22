@@ -69,8 +69,8 @@ function checkAnswers() {
         console.log("PLAYER WINS!");
         var button = document.getElementById("check-answers-button");
         var youWin = document.getElementById("you-win");
-        button.style.visibility = "hidden";
-        youWin.style.visibility = "visible";
+        button.style.display = "none";
+        youWin.style.display = "inline";
 
     }
 
@@ -170,7 +170,7 @@ window.onload = shufflePile
 
     <button id="check-answers-button" type="button" onclick="checkAnswers()">Check My Answers</button>
 
-    <h1 id="you-win" style="visibility: hidden;">You Win!</h1>
+    <h1 id="you-win" style="display: none;">You Win!</h1>
 
   </body>
 </html>
