@@ -42,12 +42,7 @@ function drag(e) {
 function drop(e) {
     e.preventDefault();
 
-    // A hack to find the 'root' drop target.
     var target = e.target;
-    if (e.target.localName != "td") {
-        target = target.parentNode;
-    }
-
     if (target.hasChildNodes()) {
         var pile = document.getElementById("the-pile");
         pile.appendChild(target.firstChild);
@@ -88,7 +83,8 @@ function checkAnswer(dropTarget) {
     };
 
     var answer = answers[dropTarget.id];
-    if (dropTarget.firstChild.id == answer) {
+    var draggableId = dropTarget.firstChild.id.split(".")[0];
+    if (draggableId == answer) {
         console.log("Drop target " + dropTarget.id + " is correct!  :)");
     } else {
         console.log("Drop target " + dropTarget.id + " is *not* correct.  :(");
@@ -122,16 +118,16 @@ window.onload = shufflePile
         <td id="nominative-singular" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td id="nominative-plural" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td id="the-pile" class="the-pile" rowspan="5" colspan="2">
-        <img src="ending-a.png" class="draggable" id="ending-a" draggable="true" ondragstart="drag(event)"/>
-        <img src="ending-ae.png" class="draggable" id="ending-ae" draggable="true" ondragstart="drag(event)"/>
-        <img src="ending-ae.png" class="draggable" id="ending-ae" draggable="true" ondragstart="drag(event)"/>
+        <img src="ending-a.png" class="draggable" id="ending-a.0" draggable="true" ondragstart="drag(event)"/>
+        <img src="ending-ae.png" class="draggable" id="ending-ae.0" draggable="true" ondragstart="drag(event)"/>
+        <img src="ending-ae.png" class="draggable" id="ending-ae.1" draggable="true" ondragstart="drag(event)"/>
         <img src="ending-am.png" class="draggable" id="ending-am" draggable="true" ondragstart="drag(event)"/>
-        <img src="ending-a.png" class="draggable" id="ending-a" draggable="true" ondragstart="drag(event)"/>
-        <img src="ending-ae.png" class="draggable" id="ending-ae" draggable="true" ondragstart="drag(event)"/>
+        <img src="ending-a.png" class="draggable" id="ending-a.1" draggable="true" ondragstart="drag(event)"/>
+        <img src="ending-ae.png" class="draggable" id="ending-ae.2" draggable="true" ondragstart="drag(event)"/>
         <img src="ending-arum.png" class="draggable" id="ending-arum" draggable="true" ondragstart="drag(event)"/>
-        <img src="ending-is.png" class="draggable" id="ending-is" draggable="true" ondragstart="drag(event)"/>
+        <img src="ending-is.png" class="draggable" id="ending-is.0" draggable="true" ondragstart="drag(event)"/>
         <img src="ending-as.png" class="draggable" id="ending-as" draggable="true" ondragstart="drag(event)"/>
-        <img src="ending-is.png" class="draggable" id="ending-is" draggable="true" ondragstart="drag(event)"/>
+        <img src="ending-is.png" class="draggable" id="ending-is.1" draggable="true" ondragstart="drag(event)"/>
         </td>
       </tr>
       <tr class="drop-target-row">
