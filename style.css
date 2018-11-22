@@ -1,0 +1,23 @@
+.case-row-heading {
+    font-weight: bold;
+}
+
+.drop-target-row {
+    height: 60px;
+}
+
+.drop-target {
+    border: 1px solid black;
+    width: 120px;
+    text-align: center;
+}
+
+.the-pile {
+    border: 1px solid black;
+    width: 240px;
+    text-align: center;
+}
+
+.draggable {
+    border: 1px solid black;
+}
