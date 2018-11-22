@@ -57,19 +57,49 @@ function drop(e) {
     target.appendChild(document.getElementById(data));
 }
 
-function checkAnswer() {
+function checkAnswers() {
     console.log("Checking answers");
+
+    var dropTargets = document.getElementsByClassName("drop-target");
+    for (var i = 0; i < dropTargets.length; i++) {
+        checkAnswer(dropTargets[i]);
+    }
+
+    console.log("Done checking answers");
+}
+
+function checkAnswer(dropTarget) {
+    if (dropTarget.firstChild == null) {
+        console.log("Drop target " + dropTarget.id + " is *unanswered*.");
+        return;
+    }
+
+    var answers = {
+        "nominative-singular": "ending-a",
+        "genitive-singular": "ending-ae",
+        "dative-singular": "ending-ae",
+        "accusative-singular": "ending-am",
+        "ablative-singular": "ending-a",
+        "nominative-plural": "ending-ae",
+        "genitive-plural": "ending-arum",
+        "dative-plural": "ending-is",
+        "accusative-plural": "ending-as",
+        "ablative-plural": "ending-is",
+    };
+
+    var answer = answers[dropTarget.id];
+    if (dropTarget.firstChild.id == answer) {
+        console.log("Drop target " + dropTarget.id + " is correct!  :)");
+    } else {
+        console.log("Drop target " + dropTarget.id + " is *not* correct.  :(");
+    }
 }
 
 function shufflePile() {
-    console.log("Shuffling the pile!");
-
     var pile = document.getElementById("the-pile");
     for (var i = pile.children.length; i > 0; i--) {
         pile.appendChild(pile.children[Math.random() * i | 0]);
     }
-
-    console.log("Done shuffling the pile!");
 }
 
 window.onload = shufflePile
@@ -89,44 +119,44 @@ window.onload = shufflePile
       </tr>
       <tr class="drop-target-row">
         <td class="case-row-heading">Nom.</td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="nominative-singular" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="nominative-plural" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td id="the-pile" class="the-pile" rowspan="5" colspan="2">
-        <img src="nominative-singular.png" class="draggable" id="nominative-singular" draggable="true" ondragstart="drag(event)"/>
-        <img src="genitive-singular.png" class="draggable" id="genitive-singular" draggable="true" ondragstart="drag(event)"/>
-        <img src="dative-singular.png" class="draggable" id="dative-singular" draggable="true" ondragstart="drag(event)"/>
-        <img src="accusative-singular.png" class="draggable" id="accusative-singular" draggable="true" ondragstart="drag(event)"/>
-        <img src="ablative-singular.png" class="draggable" id="ablative-singular" draggable="true" ondragstart="drag(event)"/>
-        <img src="nominative-plural.png" class="draggable" id="nominative-plural" draggable="true" ondragstart="drag(event)"/>
-        <img src="genitive-plural.png" class="draggable" id="genitive-plural" draggable="true" ondragstart="drag(event)"/>
-        <img src="dative-plural.png" class="draggable" id="dative-plural" draggable="true" ondragstart="drag(event)"/>
-        <img src="accusative-plural.png" class="draggable" id="accusative-plural" draggable="true" ondragstart="drag(event)"/>
-        <img src="ablative-plural.png" class="draggable" id="ablative-plural" draggable="true" ondragstart="drag(event)"/>
+        <img src="nominative-singular.png" class="draggable" id="ending-a" draggable="true" ondragstart="drag(event)"/>
+        <img src="genitive-singular.png" class="draggable" id="ending-ae" draggable="true" ondragstart="drag(event)"/>
+        <img src="dative-singular.png" class="draggable" id="ending-ae" draggable="true" ondragstart="drag(event)"/>
+        <img src="accusative-singular.png" class="draggable" id="ending-am" draggable="true" ondragstart="drag(event)"/>
+        <img src="ablative-singular.png" class="draggable" id="ending-a" draggable="true" ondragstart="drag(event)"/>
+        <img src="nominative-plural.png" class="draggable" id="ending-ae" draggable="true" ondragstart="drag(event)"/>
+        <img src="genitive-plural.png" class="draggable" id="ending-arum" draggable="true" ondragstart="drag(event)"/>
+        <img src="dative-plural.png" class="draggable" id="ending-is" draggable="true" ondragstart="drag(event)"/>
+        <img src="accusative-plural.png" class="draggable" id="ending-as" draggable="true" ondragstart="drag(event)"/>
+        <img src="ablative-plural.png" class="draggable" id="ending-is" draggable="true" ondragstart="drag(event)"/>
         </td>
       </tr>
       <tr class="drop-target-row">
         <td class="case-row-heading">Gen.</td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="genitive-singular" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="genitive-plural" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
       <tr class="drop-target-row">
         <td class="case-row-heading">Dat.</td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="dative-singular" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="dative-plural" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
       <tr class="drop-target-row">
         <td class="case-row-heading">Acc.</td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="accusative-singular" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="accusative-plural" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
       <tr class="drop-target-row">
         <td class="case-row-heading">Abl.</td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
-        <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="ablative-singular" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="ablative-plural" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
     </table>
 
-    <button type="button" onclick="checkAnswer()">Check My Answers</button>
+    <button type="button" onclick="checkAnswers()">Check My Answers</button>
 
   </body>
 </html>
