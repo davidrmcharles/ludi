@@ -43,6 +43,10 @@ function drop(e) {
     e.preventDefault();
 
     var target = e.target;
+    if (e.target.localName != "td") {
+        target = target.parentNode;
+    }
+
     if (target.hasChildNodes()) {
         var pile = document.getElementById("the-pile");
         pile.appendChild(target.firstChild);
@@ -55,9 +59,19 @@ function drop(e) {
 function checkAnswers() {
     console.log("Checking answers");
 
+    var correctness = [];
     var dropTargets = document.getElementsByClassName("drop-target");
     for (var i = 0; i < dropTargets.length; i++) {
-        checkAnswer(dropTargets[i]);
+        correctness.push(checkAnswer(dropTargets[i]));
+    }
+
+    if (correctness.every(function(e) { return !!e; })) {
+        console.log("PLAYER WINS!");
+        var button = document.getElementById("check-answers-button");
+        var youWin = document.getElementById("you-win");
+        button.style.visibility = "hidden";
+        youWin.style.visibility = "visible";
+
     }
 
     console.log("Done checking answers");
@@ -66,7 +80,7 @@ function checkAnswers() {
 function checkAnswer(dropTarget) {
     if (dropTarget.firstChild == null) {
         console.log("Drop target " + dropTarget.id + " is *unanswered*.");
-        return;
+        return false;
     }
 
     var answers = {
@@ -86,8 +100,10 @@ function checkAnswer(dropTarget) {
     var draggableId = dropTarget.firstChild.id.split(".")[0];
     if (draggableId == answer) {
         console.log("Drop target " + dropTarget.id + " is correct!  :)");
+        return true;
     } else {
         console.log("Drop target " + dropTarget.id + " is *not* correct.  :(");
+        return false;
     }
 }
 
@@ -152,7 +168,9 @@ window.onload = shufflePile
       </tr>
     </table>
 
-    <button type="button" onclick="checkAnswers()">Check My Answers</button>
+    <button id="check-answers-button" type="button" onclick="checkAnswers()">Check My Answers</button>
+
+    <h1 id="you-win" style="visibility: hidden;">You Win!</h1>
 
   </body>
 </html>
