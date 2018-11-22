@@ -166,11 +166,12 @@ window.onload = shufflePile
         <td id="ablative-singular" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td id="ablative-plural" class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
       </tr>
+      <tr>
+        <td colspan="4" style="text-align: center;">
+        <button id="check-answers-button" type="button" style="width: 100%;" onclick="checkAnswers()">Check My Answers</button>
+        <h1 id="you-win" style="display: none;">You Win!</h1>
+        </td>
+      </tr>
     </table>
-
-    <button id="check-answers-button" type="button" onclick="checkAnswers()">Check My Answers</button>
-
-    <h1 id="you-win" style="display: none;">You Win!</h1>
-
   </body>
 </html>
