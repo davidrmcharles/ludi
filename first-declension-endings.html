@@ -62,6 +62,19 @@ function checkAnswer() {
     console.log("Checking answers");
 }
 
+function shufflePile() {
+    console.log("Shuffling the pile!");
+
+    var pile = document.getElementById("the-pile");
+    for (var i = pile.children.length; i > 0; i--) {
+        pile.appendChild(pile.children[Math.random() * i | 0]);
+    }
+
+    console.log("Done shuffling the pile!");
+}
+
+window.onload = shufflePile
+
     </script>
   </head>
   <body>
