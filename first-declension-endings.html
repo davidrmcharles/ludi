@@ -37,6 +37,7 @@ function allowDrop(e) {
 
 function drag(e) {
     e.dataTransfer.setData("text", e.target.id);
+    clearDropTargetIncorrectness(e.target.parentNode);
 }
 
 function drop(e) {
@@ -54,11 +55,10 @@ function drop(e) {
 
     var data = e.dataTransfer.getData("text");
     target.appendChild(document.getElementById(data));
+    clearDropTargetIncorrectness(target);
 }
 
 function checkAnswers() {
-    console.log("Checking answers");
-
     var correctness = [];
     var dropTargets = document.getElementsByClassName("drop-target");
     for (var i = 0; i < dropTargets.length; i++) {
@@ -66,20 +66,17 @@ function checkAnswers() {
     }
 
     if (correctness.every(function(e) { return !!e; })) {
-        console.log("PLAYER WINS!");
         var button = document.getElementById("check-answers-button");
         var youWin = document.getElementById("you-win");
         button.style.display = "none";
         youWin.style.display = "inline";
 
     }
-
-    console.log("Done checking answers");
 }
 
 function checkAnswer(dropTarget) {
     if (dropTarget.firstChild == null) {
-        console.log("Drop target " + dropTarget.id + " is *unanswered*.");
+        setDropTargetIncorrectness(dropTarget);
         return false;
     }
 
@@ -99,12 +96,19 @@ function checkAnswer(dropTarget) {
     var answer = answers[dropTarget.id];
     var draggableId = dropTarget.firstChild.id.split(".")[0];
     if (draggableId == answer) {
-        console.log("Drop target " + dropTarget.id + " is correct!  :)");
         return true;
     } else {
-        console.log("Drop target " + dropTarget.id + " is *not* correct.  :(");
+        setDropTargetIncorrectness(dropTarget);
         return false;
     }
+}
+
+function setDropTargetIncorrectness(dropTarget) {
+    dropTarget.style.backgroundColor = "salmon";
+}
+
+function clearDropTargetIncorrectness(dropTarget) {
+    dropTarget.style.backgroundColor = "white";
 }
 
 function shufflePile() {
