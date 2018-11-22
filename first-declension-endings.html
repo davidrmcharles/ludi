@@ -26,7 +26,6 @@
 
 .draggable {
     border: 1px solid black;
-    width: 200px;
 }
 
     </style>
@@ -93,16 +92,16 @@ window.onload = shufflePile
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td class="drop-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
         <td id="the-pile" class="the-pile" rowspan="5" colspan="2">
-        <span class="draggable" id="nominative-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-a</span>
-        <span class="draggable" id="genitive-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-ae</span>
-        <span class="draggable" id="dative-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-ae</span>
-        <span class="draggable" id="accusative-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-am</span>
-        <span class="draggable" id="ablative-singular" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-a</span>
-        <span class="draggable" id="nominative-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-ae</span>
-        <span class="draggable" id="genitive-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-arum</span>
-        <span class="draggable" id="dative-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-is</span>
-        <span class="draggable" id="accusative-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-as</span>
-        <span class="draggable" id="ablative-plural" style="font-size: 36px" draggable="true" ondragstart="drag(event)">-is</span>
+        <img src="nominative-singular.png" class="draggable" id="nominative-singular" draggable="true" ondragstart="drag(event)"/>
+        <img src="genitive-singular.png" class="draggable" id="genitive-singular" draggable="true" ondragstart="drag(event)"/>
+        <img src="dative-singular.png" class="draggable" id="dative-singular" draggable="true" ondragstart="drag(event)"/>
+        <img src="accusative-singular.png" class="draggable" id="accusative-singular" draggable="true" ondragstart="drag(event)"/>
+        <img src="ablative-singular.png" class="draggable" id="ablative-singular" draggable="true" ondragstart="drag(event)"/>
+        <img src="nominative-plural.png" class="draggable" id="nominative-plural" draggable="true" ondragstart="drag(event)"/>
+        <img src="genitive-plural.png" class="draggable" id="genitive-plural" draggable="true" ondragstart="drag(event)"/>
+        <img src="dative-plural.png" class="draggable" id="dative-plural" draggable="true" ondragstart="drag(event)"/>
+        <img src="accusative-plural.png" class="draggable" id="accusative-plural" draggable="true" ondragstart="drag(event)"/>
+        <img src="ablative-plural.png" class="draggable" id="ablative-plural" draggable="true" ondragstart="drag(event)"/>
         </td>
       </tr>
       <tr class="drop-target-row">
