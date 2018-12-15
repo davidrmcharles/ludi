@@ -29,6 +29,7 @@ function moveSourceToHotTarget(source) {
 
     moveSourceToThePile(hotTarget.firstChild);
     hotTarget.appendChild(source);
+    removeErroneousness(hotTarget);
 }
 
 function moveSourceToThePile(source) {
@@ -91,11 +92,11 @@ function nextEmptyTarget(target) {
 }
 
 function addHotness(target) {
-    target.classList.add('hot-target');
+    target.classList.add('hot');
 }
 
 function removeHotness(target) {
-    target.classList.remove('hot-target');
+    target.classList.remove('hot');
 }
 
 // Answer Checking
@@ -117,7 +118,7 @@ function checkAnswers() {
 
 function checkAnswer(target) {
     if (target.firstChild == null) {
-        setTargetIncorrectness(target);
+        addErroneousness(target);
         return false;
     }
 
@@ -137,21 +138,21 @@ function checkAnswer(target) {
     var answer = answers[target.id];
     var sourceId = target.firstChild.id.split('.')[0];
     if (sourceId == answer) {
-        clearTargetIncorrectness(target);
+        removeErroneousness(target);
         return true;
     } else {
-        setTargetIncorrectness(target);
+        addErroneousness(target);
         return false;
     }
 }
 
-function setTargetIncorrectness(target) {
+function addErroneousness(target) {
     if (!target.classList.contains('erroneous')) {
         target.classList.add('erroneous');
     }
 }
 
-function clearTargetIncorrectness(target) {
+function removeErroneousness(target) {
     if (target.classList.contains('erroneous')) {
         target.classList.remove('erroneous');
     }
@@ -168,7 +169,7 @@ function getTargets() {
 }
 
 function getTheHotTarget() {
-    return document.getElementsByClassName('hot-target')[0];
+    return document.getElementsByClassName('hot')[0];
 }
 
 function getSources() {
@@ -178,7 +179,6 @@ function getSources() {
 // Initialization
 
 window.onload = function() {
-    console.log('hi');
     registerTouchHandlers();
     shuffleThePile();
 }
