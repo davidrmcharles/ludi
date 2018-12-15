@@ -1,33 +1,30 @@
-// Touch handling
+// Touch Handling
 
 function registerTouchHandlers() {
-    var targets = document.getElementsByClassName('target');
+    var targets = getTargets();
     for (var i = 0; i < targets.length; i++) {
         targets[i].addEventListener('click', onTargetTouched);
     }
 
-    var sources = document.getElementsByClassName('source');
+    var sources = getSources();
     for (var i = 0; i < sources.length; i++) {
         sources[i].addEventListener('click', onSourceTouched);
     }
 }
 
 function onTargetTouched(event) {
-    console.log('hi');
 
     var target = event.target;
     if (!target.classList.contains('target')) {
         target = target.parentElement;
-
-        var pile = document.getElementById('the-pile');
-        pile.appendChild(event.target);
     }
 
+    moveSourceToThePile(target.firstChild);
     setHotTarget(target);
 }
 
 function setHotTarget(hotTarget) {
-    var targets = document.getElementsByClassName('target');
+    var targets = getTargets();
     for (var i = 0; i < targets.length; i++) {
         if (targets[i] == hotTarget) {
             addHotness(targets[i]);
@@ -38,8 +35,8 @@ function setHotTarget(hotTarget) {
 }
 
 function onSourceTouched(event) {
-    var pile = document.getElementById('the-pile');
-    if (event.target.parentElement != pile) {
+    if (event.target.parentElement != getThePile()) {
+        // This event will be handled by onTargetTouched.
         return;
     }
 
@@ -48,27 +45,39 @@ function onSourceTouched(event) {
 }
 
 function moveSourceToHotTarget(source) {
-    var hotTarget = document.getElementsByClassName('hot-target')[0];
+    var hotTarget = getTheHotTarget();
     if (hotTarget == null) {
         return;
     }
 
-    if (hotTarget.firstElementChild != null) {
-        var pile = document.getElementById('the-pile');
-        pile.appendChild(hotTarget.firstElementChild);
-    }
-
+    moveSourceToThePile(hotTarget.firstChild);
     hotTarget.appendChild(source);
 }
 
+function moveSourceToThePile(source) {
+    if (source == null) {
+        return;
+    }
+    getThePile().appendChild(source);
+}
+
 function advanceHotTarget() {
-    var hotTarget = document.getElementsByClassName('hot-target')[0];
+    // Remove hotness from the current hot target.
+    var hotTarget = getTheHotTarget();
     if (hotTarget == null) {
         return;
     }
     removeHotness(hotTarget);
 
-    var targetSequence = [
+    // Add hotness to the next target.
+    var nextHotTarget = nextEmptyTarget(hotTarget);
+    if (nextHotTarget != null) {
+        addHotness(nextHotTarget);
+    }
+}
+
+function nextEmptyTarget(target) {
+    var targetIds = [
         'nominative-singular',
         'genitive-singular',
         'dative-singular',
@@ -79,15 +88,16 @@ function advanceHotTarget() {
         'dative-plural',
         'accusative-plural',
         'ablative-plural',
-    ]
+    ];
 
-    var nextIndex = targetSequence.indexOf(hotTarget.id) + 1;
-    if (nextIndex == targetSequence.length) {
-        ;
-    } else {
-        var nextHotTarget = document.getElementById(targetSequence[nextIndex]);
-        addHotness(nextHotTarget);
+    for (var i = targetIds.indexOf(target.id) + 1; i != targetIds.length; i++) {
+        var nextTarget = document.getElementById(targetIds[i]);
+        if (nextTarget.firstChild == null) {
+            return nextTarget;
+        }
     }
+
+    return null;
 }
 
 function addHotness(target) {
@@ -98,11 +108,11 @@ function removeHotness(target) {
     target.classList.remove('hot-target');
 }
 
-// Checking answers
+// Answer Checking
 
 function checkAnswers() {
     var correctness = [];
-    var targets = document.getElementsByClassName('target');
+    var targets = getTargets();
     for (var i = 0; i < targets.length; i++) {
         correctness.push(checkAnswer(targets[i]));
     }
@@ -153,18 +163,36 @@ function clearTargetIncorrectness(target) {
     target.style.backgroundColor = 'white';
 }
 
-// Shuffling
+// Shuffling the Pile
 
-function shufflePile() {
-    var pile = document.getElementById('the-pile');
-    for (var i = pile.children.length; i > 0; i--) {
-        pile.appendChild(pile.children[Math.random() * i | 0]);
+function shuffleThePile() {
+    var thePile = getThePile();
+    for (var i = thePile.children.length; i > 0; i--) {
+        thePile.appendChild(thePile.children[Math.random() * i | 0]);
     }
 }
 
-function onLoad() {
-    registerTouchHandlers();
-    shufflePile();
+// Important Elements
+
+function getThePile() {
+    return document.getElementById('the-pile');
 }
 
-window.onload = onLoad
+function getTargets() {
+    return document.getElementsByClassName('target');
+}
+
+function getTheHotTarget() {
+    return document.getElementsByClassName('hot-target')[0];
+}
+
+function getSources() {
+    return document.getElementsByClassName('source');
+}
+
+// Would you call this 'Main'?
+
+window.onload = function() {
+    registerTouchHandlers();
+    shuffleThePile();
+}
