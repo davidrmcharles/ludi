@@ -1,0 +1,27 @@
+.case-row-heading {
+    font-weight: bold;
+}
+
+.drop-target-row {
+    height: 60px;
+}
+
+.target {
+    border: 2px solid black;
+    width: 120px;
+    text-align: center;
+}
+
+.hot-target {
+    border: 2px solid red;
+}
+
+.the-pile {
+    border: 1px solid black;
+    width: 240px;
+    text-align: center;
+}
+
+.source {
+    border: 1px solid black;
+}

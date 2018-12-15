@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ludi - First Declension Endings</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="ludi-touch.css"/>
+    <script src="ludi-touch.js"></script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th colspan="4"><h1 style="text-align: center;">First Declension Endings</h1></th>
+      </tr>
+      <tr>
+        <th/>
+        <th>Singular</th>
+        <th>Plural</th>
+        <th>The Pile</th>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Nom.</td>
+        <td id="nominative-singular" class="target hot-target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="nominative-plural" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="the-pile" class="the-pile" rowspan="5" colspan="2">
+          <img src="ending-a.png" class="source" id="ending-a.0"/>
+          <img src="ending-ae.png" class="source" id="ending-ae.0"/>
+          <img src="ending-ae.png" class="source" id="ending-ae.1"/>
+          <img src="ending-am.png" class="source" id="ending-am"/>
+          <img src="ending-a.png" class="source" id="ending-a.1"/>
+          <img src="ending-ae.png" class="source" id="ending-ae.2"/>
+          <img src="ending-arum.png" class="source" id="ending-arum"/>
+          <img src="ending-is.png" class="source" id="ending-is.0"/>
+          <img src="ending-as.png" class="source" id="ending-as"/>
+          <img src="ending-is.png" class="source" id="ending-is.1"/>
+        </td>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Gen.</td>
+        <td id="genitive-singular" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="genitive-plural" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Dat.</td>
+        <td id="dative-singular" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="dative-plural" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Acc.</td>
+        <td id="accusative-singular" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="accusative-plural" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+      <tr class="drop-target-row">
+        <td class="case-row-heading">Abl.</td>
+        <td id="ablative-singular" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+        <td id="ablative-plural" class="target" ondragover="allowDrop(event)" ondrop="drop(event)"></td>
+      </tr>
+      <tr>
+        <td colspan="4" style="text-align: center;">
+          <button id="check-answers-button" type="button" style="width: 100%;" onclick="checkAnswers()">Check My Answers</button>
+          <h1 id="you-win" style="display: none;">You Win!</h1>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
