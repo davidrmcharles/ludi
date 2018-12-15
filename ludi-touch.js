@@ -1,17 +1,5 @@
 // Touch Handling
 
-function registerTouchHandlers() {
-    var targets = getTargets();
-    for (var i = 0; i < targets.length; i++) {
-        targets[i].addEventListener('click', onTargetTouched);
-    }
-
-    var sources = getSources();
-    for (var i = 0; i < sources.length; i++) {
-        sources[i].addEventListener('click', onSourceTouched);
-    }
-}
-
 function onTargetTouched(event) {
 
     var target = event.target;
@@ -21,17 +9,6 @@ function onTargetTouched(event) {
 
     moveSourceToThePile(target.firstChild);
     setHotTarget(target);
-}
-
-function setHotTarget(hotTarget) {
-    var targets = getTargets();
-    for (var i = 0; i < targets.length; i++) {
-        if (targets[i] == hotTarget) {
-            addHotness(targets[i]);
-        } else  {
-            removeHotness(targets[i]);
-        }
-    }
 }
 
 function onSourceTouched(event) {
@@ -59,6 +36,19 @@ function moveSourceToThePile(source) {
         return;
     }
     getThePile().appendChild(source);
+}
+
+// The Hot Target
+
+function setHotTarget(hotTarget) {
+    var targets = getTargets();
+    for (var i = 0; i < targets.length; i++) {
+        if (targets[i] == hotTarget) {
+            addHotness(targets[i]);
+        } else  {
+            removeHotness(targets[i]);
+        }
+    }
 }
 
 function advanceHotTarget() {
@@ -156,19 +146,14 @@ function checkAnswer(target) {
 }
 
 function setTargetIncorrectness(target) {
-    target.style.backgroundColor = 'salmon';
+    if (!target.classList.contains('erroneous')) {
+        target.classList.add('erroneous');
+    }
 }
 
 function clearTargetIncorrectness(target) {
-    target.style.backgroundColor = 'white';
-}
-
-// Shuffling the Pile
-
-function shuffleThePile() {
-    var thePile = getThePile();
-    for (var i = thePile.children.length; i > 0; i--) {
-        thePile.appendChild(thePile.children[Math.random() * i | 0]);
+    if (target.classList.contains('erroneous')) {
+        target.classList.remove('erroneous');
     }
 }
 
@@ -190,9 +175,29 @@ function getSources() {
     return document.getElementsByClassName('source');
 }
 
-// Would you call this 'Main'?
+// Initialization
 
 window.onload = function() {
+    console.log('hi');
     registerTouchHandlers();
     shuffleThePile();
+}
+
+function registerTouchHandlers() {
+    var targets = getTargets();
+    for (var i = 0; i < targets.length; i++) {
+        targets[i].addEventListener('click', onTargetTouched);
+    }
+
+    var sources = getSources();
+    for (var i = 0; i < sources.length; i++) {
+        sources[i].addEventListener('click', onSourceTouched);
+    }
+}
+
+function shuffleThePile() {
+    var thePile = getThePile();
+    for (var i = thePile.children.length; i > 0; i--) {
+        thePile.appendChild(thePile.children[Math.random() * i | 0]);
+    }
 }

@@ -16,6 +16,10 @@
     border: 2px solid lime;
 }
 
+.erroneous {
+    background-color: salmon;
+}
+
 .the-pile {
     border: 1px solid black;
     width: 240px;
