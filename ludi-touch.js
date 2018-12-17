@@ -28,7 +28,12 @@ function moveSourceToHotTarget(source) {
     }
 
     moveSourceToThePile(hotTarget.firstChild);
-    hotTarget.appendChild(source);
+
+    cloneOfSource = source.cloneNode();
+    cloneOfSource.id = decorateSourceId(cloneOfSource.id);
+    hotTarget.appendChild(cloneOfSource);
+    source.classList.add('assigned')
+
     removeErroneousness(hotTarget);
 }
 
@@ -36,7 +41,20 @@ function moveSourceToThePile(source) {
     if (source == null) {
         return;
     }
-    getThePile().appendChild(source);
+
+    source.parentElement.removeChild(source);
+    sourceId = undecorateSourceId(source.id);
+    document.getElementById(sourceId).classList.remove('assigned');
+}
+
+function decorateSourceId(id) {
+    return id + '.clone';
+}
+
+function undecorateSourceId(id) {
+    tokens = id.split('.');
+    tokens.pop();
+    return tokens.join('.');
 }
 
 // The Hot Target

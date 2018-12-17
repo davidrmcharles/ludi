@@ -29,3 +29,7 @@
 .source {
     border: 1px solid black;
 }
+
+.assigned {
+    opacity: 0.5;
+}
