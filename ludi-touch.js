@@ -17,6 +17,11 @@ function onSourceTouched(event) {
         return;
     }
 
+    if (event.target.classList.contains('assigned')) {
+        // The source is already assigned.
+        return;
+    }
+
     moveSourceToHotTarget(event.target);
     advanceHotTarget();
 }
