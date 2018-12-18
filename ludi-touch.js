@@ -104,12 +104,15 @@ function nextEmptyOrErroneousTarget(target) {
         'ablative-plural',
     ];
 
-    for (var i = targetIds.indexOf(target.id) + 1; i != targetIds.length; i++) {
-        var nextTarget = document.getElementById(targetIds[i]);
-        if (nextTarget.firstChild == null) {
-            return nextTarget;
-        } else if (nextTarget.classList.contains('erroneous')) {
-            return nextTarget;
+    var startIndex = (targetIds.indexOf(target.id) + 1) % targetIds.length;
+    var targetIds_ = targetIds.slice(startIndex).concat(
+        targetIds.slice(0, startIndex));
+    for (var index = 0; index < targetIds_.length; ++index) {
+        var target_ = document.getElementById(targetIds_[index]);
+        if (target_.firstChild == null) {
+            return target_;
+        } else if (target_.classList.contains('erroneous')) {
+            return target_;
         }
     }
 
