@@ -84,13 +84,13 @@ function advanceHotTarget() {
     removeHotness(hotTarget);
 
     // Add hotness to the next target.
-    var nextHotTarget = nextEmptyTarget(hotTarget);
+    var nextHotTarget = nextEmptyOrErroneousTarget(hotTarget);
     if (nextHotTarget != null) {
         addHotness(nextHotTarget);
     }
 }
 
-function nextEmptyTarget(target) {
+function nextEmptyOrErroneousTarget(target) {
     var targetIds = [
         'nominative-singular',
         'genitive-singular',
@@ -107,6 +107,8 @@ function nextEmptyTarget(target) {
     for (var i = targetIds.indexOf(target.id) + 1; i != targetIds.length; i++) {
         var nextTarget = document.getElementById(targetIds[i]);
         if (nextTarget.firstChild == null) {
+            return nextTarget;
+        } else if (nextTarget.classList.contains('erroneous')) {
             return nextTarget;
         }
     }
