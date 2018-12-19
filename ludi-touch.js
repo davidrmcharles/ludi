@@ -1,3 +1,25 @@
+// The Timer
+
+_timerId = null;
+_elapsedTime = 0
+
+function startTimer() {
+    _timerId = setInterval(tick, 1000);
+}
+
+function stopTimer() {
+    clearInterval(_timerId);
+}
+
+function tick() {
+    _elapsedTime++;
+    document.getElementById('timer').innerHTML = formatTime(_elapsedTime);
+}
+
+function formatTime(seconds) {
+    return seconds + ' second(s)';
+}
+
 // Touch Handling
 
 function onTargetTouched(event) {
@@ -137,6 +159,7 @@ function checkAnswers() {
     }
 
     if (correctness.every(function(e) { return !!e; })) {
+        stopTimer();
         var button = document.getElementById('check-answers-button');
         var youWin = document.getElementById('you-win');
         button.style.display = 'none';
@@ -209,6 +232,7 @@ function getSources() {
 window.onload = function() {
     registerTouchHandlers();
     shuffleThePile();
+    startTimer();
 }
 
 function registerTouchHandlers() {
