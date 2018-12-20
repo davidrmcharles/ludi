@@ -87,12 +87,11 @@ function undecorateSourceId(id) {
 // The Hot Target
 
 function setHotTarget(hotTarget) {
-    var targets = getTargets();
-    for (var i = 0; i < targets.length; i++) {
-        if (targets[i] == hotTarget) {
-            addHotness(targets[i]);
+    for (var target of getTargets()) {
+        if (target === hotTarget) {
+            addHotness(target);
         } else  {
-            removeHotness(targets[i]);
+            removeHotness(target);
         }
     }
 }
@@ -161,9 +160,8 @@ function showElement(elem) {
 
 function checkAnswers() {
     var correctness = [];
-    var targets = getTargets();
-    for (var i = 0; i < targets.length; i++) {
-        correctness.push(checkAnswer(targets[i]));
+    for (var target of getTargets()) {
+        correctness.push(checkAnswer(target));
     }
 
     if (correctness.every(function(e) { return !!e; })) {
@@ -255,34 +253,30 @@ function startGame() {
     showPile();
     showElement(getTimer());
     startTimer();
-
     hideElement(getStartButton());
     showElement(getStopButton());
 }
 
 function registerTouchHandlers() {
-    var targets = getTargets();
-    for (var i = 0; i < targets.length; i++) {
-        targets[i].addEventListener('click', onTargetTouched);
+    for (var target of getTargets()) {
+        target.addEventListener('click', onTargetTouched);
     }
 
-    var sources = getSources();
-    for (var i = 0; i < sources.length; i++) {
-        sources[i].addEventListener('click', onSourceTouched);
+    for (var source of getSources()) {
+        source.addEventListener('click', onSourceTouched);
     }
 }
 
 function shufflePile() {
-    var thePile = getPile();
-    for (var i = thePile.children.length; i > 0; i--) {
-        thePile.appendChild(thePile.children[Math.random() * i | 0]);
+    var pile = getPile();
+    for (var i = pile.children.length; i > 0; i--) {
+        pile.appendChild(pile.children[Math.random() * i | 0]);
     }
 }
 
 function showPile() {
-    var thePile = getPile();
-    for (var i = 0; i < thePile.children.length; i++) {
-        showElement(thePile.children.item(i));
+    for (var source of getPile().children) {
+        showElement(source);
     }
 }
 
@@ -296,13 +290,11 @@ function stopGame() {
 }
 
 function unregisterTouchHandlers() {
-    var targets = getTargets();
-    for (var i = 0; i < targets.length; i++) {
-        targets[i].removeEventListener('click', onTargetTouched);
+    for (var target of getTargets()) {
+        target.removeEventListener('click', onTargetTouched);
     }
 
-    var sources = getSources();
-    for (var i = 0; i < sources.length; i++) {
-        sources[i].removeEventListener('click', onSourceTouched);
+    for (var source of getSources()) {
+        source.removeEventListener('click', onSourceTouched);
     }
 }
