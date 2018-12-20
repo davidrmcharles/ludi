@@ -142,6 +142,8 @@ function moveTileToHotTarget(tile) {
 
     cloneOfTile = tile.cloneNode();
     cloneOfTile.id = decorateTileId(cloneOfTile.id);
+    cloneOfTile.style.padding = '0px';
+    cloneOfTile.style.border = 'none';
     hotTarget.appendChild(cloneOfTile);
     tile.classList.add('assigned')
 

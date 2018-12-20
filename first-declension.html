@@ -3,36 +3,21 @@
   <head>
     <title>ludi - First Declension Endings</title>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" type="text/css" href="ludi.css"/>
     <script src="ludi.js"></script>
   </head>
   <body>
     <table>
       <tr>
-        <th colspan="4"><h1 class="centered">First Declension Endings</h1></th>
-      </tr>
-      <tr>
         <th/>
         <th>Singular</th>
         <th>Plural</th>
-        <th>The Pile</th>
       </tr>
       <tr class="target-row">
         <td class="case-row-heading">Nom.</td>
         <td id="nominative-singular" class="target"></td>
         <td id="nominative-plural" class="target"></td>
-        <td id="pile" class="pile" rowspan="5" colspan="2">
-          <img src="ending-a.png" class="tile hidden" id="ending-a.0" ondragstart="return false;"/>
-          <img src="ending-ae.png" class="tile hidden" id="ending-ae.0" ondragstart="return false;"/>
-          <img src="ending-ae.png" class="tile hidden" id="ending-ae.1" ondragstart="return false;"/>
-          <img src="ending-am.png" class="tile hidden" id="ending-am" ondragstart="return false;"/>
-          <img src="ending-a.png" class="tile hidden" id="ending-a.1" ondragstart="return false;"/>
-          <img src="ending-ae.png" class="tile hidden" id="ending-ae.2" ondragstart="return false;"/>
-          <img src="ending-arum.png" class="tile hidden" id="ending-arum" ondragstart="return false;"/>
-          <img src="ending-is.png" class="tile hidden" id="ending-is.0" ondragstart="return false;"/>
-          <img src="ending-as.png" class="tile hidden" id="ending-as" ondragstart="return false;"/>
-          <img src="ending-is.png" class="tile hidden" id="ending-is.1" ondragstart="return false;"/>
-        </td>
       </tr>
       <tr class="target-row">
         <td class="case-row-heading">Gen.</td>
@@ -55,14 +40,29 @@
         <td id="ablative-plural" class="target"></td>
       </tr>
       <tr>
-        <td colspan="4" class="centered">
-          <button id="start-button" type="button" style="width: 100%;" onclick="startGame()">Start</button>
-          <button id="stop-button" class="hidden" type="button" style="width: 100%;" onclick="checkAnswers()">I'm Done</button>
-          <h1 id="you-win" class="hidden">You Win!</h1>
+        <td/>
+        <td id="pile" class="pile" colspan="2">
+          <img src="ending-a.png" class="tile hidden" id="ending-a.0" ondragstart="return false;"/>
+          <img src="ending-ae.png" class="tile hidden" id="ending-ae.0" ondragstart="return false;"/>
+          <img src="ending-ae.png" class="tile hidden" id="ending-ae.1" ondragstart="return false;"/>
+          <img src="ending-am.png" class="tile hidden" id="ending-am" ondragstart="return false;"/>
+          <img src="ending-a.png" class="tile hidden" id="ending-a.1" ondragstart="return false;"/>
+          <img src="ending-ae.png" class="tile hidden" id="ending-ae.2" ondragstart="return false;"/>
+          <img src="ending-arum.png" class="tile hidden" id="ending-arum" ondragstart="return false;"/>
+          <img src="ending-is.png" class="tile hidden" id="ending-is.0" ondragstart="return false;"/>
+          <img src="ending-as.png" class="tile hidden" id="ending-as" ondragstart="return false;"/>
+          <img src="ending-is.png" class="tile hidden" id="ending-is.1" ondragstart="return false;"/>
         </td>
       </tr>
-      <tr>
-        <td id="timer" class="hidden centered" colspan="4" >0 second(s)</td>
+      <tr id="button-row">
+        <td colspan="3" class="centered">
+          <button id="start-button" type="button" style="width: 100%;" onclick="startGame()">Start</button>
+          <button id="stop-button" class="hidden" type="button" style="width: 100%;" onclick="checkAnswers()">I'm Done</button>
+          <h3 id="you-win" class="hidden">You Win!</h3>
+        </td>
+      </tr>
+      <tr id="timer-row">
+        <td id="timer" class="hidden centered" colspan="3" >0 second(s)</td>
       </tr>
     </table>
     <ul id="answers" class="hidden">
