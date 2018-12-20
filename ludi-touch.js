@@ -239,6 +239,10 @@ function getStopButton() {
     return document.getElementById('check-answers-button');
 }
 
+function getWinBanner() {
+    return document.getElementById('you-win');
+}
+
 function getTimer() {
     return document.getElementById('timer');
 }
@@ -278,7 +282,7 @@ function shufflePile() {
 function showPile() {
     var thePile = getPile();
     for (var i = 0; i < thePile.children.length; i++) {
-        thePile.children.item(i).style.display = 'inline';
+        showElement(thePile.children.item(i));
     }
 }
 
@@ -286,13 +290,9 @@ function showPile() {
 
 function stopGame() {
     stopTimer();
-
     unregisterTouchHandlers();
-
-    var button = document.getElementById('check-answers-button');
-    var youWin = document.getElementById('you-win');
-    button.style.display = 'none';
-    youWin.style.display = 'inline';
+    hideElement(getStopButton());
+    showElement(getWinBanner());
 }
 
 function unregisterTouchHandlers() {
