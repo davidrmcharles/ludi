@@ -4,6 +4,7 @@
 //
 // Internal Overview:
 //
+// * Initialization
 // * Starting the Game
 // * Stopping the Game
 // * The Timer
@@ -11,6 +12,21 @@
 // * The Hot Target
 // * Answer Checking
 // * Important Elements
+
+// Initialization
+
+_targetIds = [];
+_answers = {};
+
+window.onload = function() {
+    var answersList = document.getElementById('answers');
+    for (child of answersList.children) {
+        console.log(child.id + ' ' + child.textContent);
+        _answers[child.id] = child.textContent;
+    }
+
+    _targetIds = Object.keys(_answers);
+}
 
 // Starting the Game
 
@@ -181,22 +197,9 @@ function advanceHotTarget() {
 }
 
 function nextEmptyOrErroneousTarget(target) {
-    var targetIds = [
-        'nominative-singular',
-        'genitive-singular',
-        'dative-singular',
-        'accusative-singular',
-        'ablative-singular',
-        'nominative-plural',
-        'genitive-plural',
-        'dative-plural',
-        'accusative-plural',
-        'ablative-plural',
-    ];
-
-    var startIndex = (targetIds.indexOf(target.id) + 1) % targetIds.length;
-    var targetIds_ = targetIds.slice(startIndex).concat(
-        targetIds.slice(0, startIndex));
+    var startIndex = (_targetIds.indexOf(target.id) + 1) % _targetIds.length;
+    var targetIds_ = _targetIds.slice(startIndex).concat(
+        _targetIds.slice(0, startIndex));
     for (var index = 0; index < targetIds_.length; ++index) {
         var target_ = document.getElementById(targetIds_[index]);
         if (target_.firstChild == null) {
@@ -244,20 +247,7 @@ function checkAnswer(target) {
         return false;
     }
 
-    var answers = {
-        'nominative-singular': 'ending-a',
-        'genitive-singular': 'ending-ae',
-        'dative-singular': 'ending-ae',
-        'accusative-singular': 'ending-am',
-        'ablative-singular': 'ending-a',
-        'nominative-plural': 'ending-ae',
-        'genitive-plural': 'ending-arum',
-        'dative-plural': 'ending-is',
-        'accusative-plural': 'ending-as',
-        'ablative-plural': 'ending-is',
-    };
-
-    var answer = answers[target.id];
+    var answer = _answers[target.id];
     var tileId = target.firstChild.id.split('.')[0];
     if (tileId == answer) {
         removeErroneousness(target);
