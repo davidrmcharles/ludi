@@ -29,56 +29,56 @@ function onTargetTouched(event) {
         target = target.parentElement;
     }
 
-    moveSourceToPile(target.firstChild);
+    moveTileToPile(target.firstChild);
     setHotTarget(target);
 }
 
-function onSourceTouched(event) {
+function onTileTouched(event) {
     if (event.target.parentElement != getPile()) {
         // This event will be handled by onTargetTouched.
         return;
     }
 
     if (event.target.classList.contains('assigned')) {
-        // The source is already assigned.
+        // The tile is already assigned.
         return;
     }
 
-    moveSourceToHotTarget(event.target);
+    moveTileToHotTarget(event.target);
     advanceHotTarget();
 }
 
-function moveSourceToHotTarget(source) {
+function moveTileToHotTarget(tile) {
     var hotTarget = getHotTarget();
     if (hotTarget == null) {
         return;
     }
 
-    moveSourceToPile(hotTarget.firstChild);
+    moveTileToPile(hotTarget.firstChild);
 
-    cloneOfSource = source.cloneNode();
-    cloneOfSource.id = decorateSourceId(cloneOfSource.id);
-    hotTarget.appendChild(cloneOfSource);
-    source.classList.add('assigned')
+    cloneOfTile = tile.cloneNode();
+    cloneOfTile.id = decorateTileId(cloneOfTile.id);
+    hotTarget.appendChild(cloneOfTile);
+    tile.classList.add('assigned')
 
     removeErroneousness(hotTarget);
 }
 
-function moveSourceToPile(source) {
-    if (source == null) {
+function moveTileToPile(tile) {
+    if (tile == null) {
         return;
     }
 
-    source.parentElement.removeChild(source);
-    sourceId = undecorateSourceId(source.id);
-    document.getElementById(sourceId).classList.remove('assigned');
+    tile.parentElement.removeChild(tile);
+    tileId = undecorateTileId(tile.id);
+    document.getElementById(tileId).classList.remove('assigned');
 }
 
-function decorateSourceId(id) {
+function decorateTileId(id) {
     return id + '.clone';
 }
 
-function undecorateSourceId(id) {
+function undecorateTileId(id) {
     tokens = id.split('.');
     tokens.pop();
     return tokens.join('.');
@@ -189,8 +189,8 @@ function checkAnswer(target) {
     };
 
     var answer = answers[target.id];
-    var sourceId = target.firstChild.id.split('.')[0];
-    if (sourceId == answer) {
+    var tileId = target.firstChild.id.split('.')[0];
+    if (tileId == answer) {
         removeErroneousness(target);
         return true;
     } else {
@@ -225,8 +225,8 @@ function getHotTarget() {
     return document.getElementsByClassName('hot')[0];
 }
 
-function getSources() {
-    return document.getElementsByClassName('source');
+function getTiles() {
+    return document.getElementsByClassName('tile');
 }
 
 function getStartButton() {
@@ -262,8 +262,8 @@ function registerTouchHandlers() {
         target.addEventListener('click', onTargetTouched);
     }
 
-    for (var source of getSources()) {
-        source.addEventListener('click', onSourceTouched);
+    for (var tile of getTiles()) {
+        tile.addEventListener('click', onTileTouched);
     }
 }
 
@@ -275,8 +275,8 @@ function shufflePile() {
 }
 
 function showPile() {
-    for (var source of getPile().children) {
-        showElement(source);
+    for (var tile of getPile().children) {
+        showElement(tile);
     }
 }
 
@@ -294,7 +294,7 @@ function unregisterTouchHandlers() {
         target.removeEventListener('click', onTargetTouched);
     }
 
-    for (var source of getSources()) {
-        source.removeEventListener('click', onSourceTouched);
+    for (var tile of getTiles()) {
+        tile.removeEventListener('click', onTileTouched);
     }
 }
