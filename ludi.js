@@ -22,6 +22,7 @@ function startGame() {
     startTimer();
     hideElement(getStartButton());
     showElement(getStopButton());
+    setHotTarget(document.getElementById('nominative-singular'));
 }
 
 function registerTouchHandlers() {
