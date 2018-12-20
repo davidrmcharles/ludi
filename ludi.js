@@ -21,7 +21,6 @@ _answers = {};
 window.onload = function() {
     var answersList = document.getElementById('answers');
     for (child of answersList.children) {
-        console.log(child.id + ' ' + child.textContent);
         _answers[child.id] = child.textContent;
     }
 
