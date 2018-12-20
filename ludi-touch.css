@@ -33,3 +33,7 @@
 .assigned {
     opacity: 0.5;
 }
+
+.hidden {
+    display: none;
+}

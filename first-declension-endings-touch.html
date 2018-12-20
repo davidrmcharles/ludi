@@ -22,16 +22,16 @@
         <td id="nominative-singular" class="target hot"></td>
         <td id="nominative-plural" class="target"></td>
         <td id="the-pile" class="the-pile" rowspan="5" colspan="2">
-          <img src="ending-a.png" class="source" id="ending-a.0" ondragstart="return false;"/>
-          <img src="ending-ae.png" class="source" id="ending-ae.0" ondragstart="return false;"/>
-          <img src="ending-ae.png" class="source" id="ending-ae.1" ondragstart="return false;"/>
-          <img src="ending-am.png" class="source" id="ending-am" ondragstart="return false;"/>
-          <img src="ending-a.png" class="source" id="ending-a.1" ondragstart="return false;"/>
-          <img src="ending-ae.png" class="source" id="ending-ae.2" ondragstart="return false;"/>
-          <img src="ending-arum.png" class="source" id="ending-arum" ondragstart="return false;"/>
-          <img src="ending-is.png" class="source" id="ending-is.0" ondragstart="return false;"/>
-          <img src="ending-as.png" class="source" id="ending-as" ondragstart="return false;"/>
-          <img src="ending-is.png" class="source" id="ending-is.1" ondragstart="return false;"/>
+          <img src="ending-a.png" class="source hidden" id="ending-a.0" ondragstart="return false;"/>
+          <img src="ending-ae.png" class="source hidden" id="ending-ae.0" ondragstart="return false;"/>
+          <img src="ending-ae.png" class="source hidden" id="ending-ae.1" ondragstart="return false;"/>
+          <img src="ending-am.png" class="source hidden" id="ending-am" ondragstart="return false;"/>
+          <img src="ending-a.png" class="source hidden" id="ending-a.1" ondragstart="return false;"/>
+          <img src="ending-ae.png" class="source hidden" id="ending-ae.2" ondragstart="return false;"/>
+          <img src="ending-arum.png" class="source hidden" id="ending-arum" ondragstart="return false;"/>
+          <img src="ending-is.png" class="source hidden" id="ending-is.0" ondragstart="return false;"/>
+          <img src="ending-as.png" class="source hidden" id="ending-as" ondragstart="return false;"/>
+          <img src="ending-is.png" class="source hidden" id="ending-is.1" ondragstart="return false;"/>
         </td>
       </tr>
       <tr class="target-row">
@@ -56,12 +56,13 @@
       </tr>
       <tr>
         <td colspan="4" style="text-align: center;">
-          <button id="check-answers-button" type="button" style="width: 100%;" onclick="checkAnswers()">Check My Answers</button>
-          <h1 id="you-win" style="display: none;">You Win!</h1>
+          <button id="start-game-button" type="button" style="width: 100%;" onclick="startGame()">Start</button>
+          <button id="check-answers-button" class="hidden" type="button" style="width: 100%;" onclick="checkAnswers()">I'm Done</button>
+          <h1 id="you-win" class="hidden">You Win!</h1>
         </td>
       </tr>
       <tr>
-        <td id="timer" colspan="4" style="text-align: center;">0 second(s)</td>
+        <td id="timer" class="hidden" colspan="4" style="text-align: center;">0 second(s)</td>
       </tr>
     </table>
   </body>

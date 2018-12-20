@@ -13,7 +13,7 @@ function stopTimer() {
 
 function tick() {
     _elapsedTime++;
-    document.getElementById('timer').innerHTML = formatTime(_elapsedTime);
+    getTheTimer().innerHTML = formatTime(_elapsedTime);
 }
 
 function formatTime(seconds) {
@@ -149,6 +149,14 @@ function removeHotness(target) {
     target.classList.remove('hot');
 }
 
+function hideElement(elem) {
+    elem.classList.add('hidden');
+}
+
+function showElement(elem) {
+    elem.classList.remove('hidden');
+}
+
 // Answer Checking
 
 function checkAnswers() {
@@ -159,11 +167,7 @@ function checkAnswers() {
     }
 
     if (correctness.every(function(e) { return !!e; })) {
-        stopTimer();
-        var button = document.getElementById('check-answers-button');
-        var youWin = document.getElementById('you-win');
-        button.style.display = 'none';
-        youWin.style.display = 'inline';
+        stopGame();
     }
 }
 
@@ -227,12 +231,29 @@ function getSources() {
     return document.getElementsByClassName('source');
 }
 
-// Initialization
+function getStartButton() {
+    return document.getElementById('start-game-button');
+}
 
-window.onload = function() {
+function getStopButton() {
+    return document.getElementById('check-answers-button');
+}
+
+function getTheTimer() {
+    return document.getElementById('timer');
+}
+
+// Starting the Game
+
+function startGame() {
     registerTouchHandlers();
     shuffleThePile();
+    showThePile();
+    showElement(getTheTimer());
     startTimer();
+
+    hideElement(getStartButton());
+    showElement(getStopButton());
 }
 
 function registerTouchHandlers() {
@@ -251,5 +272,37 @@ function shuffleThePile() {
     var thePile = getThePile();
     for (var i = thePile.children.length; i > 0; i--) {
         thePile.appendChild(thePile.children[Math.random() * i | 0]);
+    }
+}
+
+function showThePile() {
+    var thePile = getThePile();
+    for (var i = 0; i < thePile.children.length; i++) {
+        thePile.children.item(i).style.display = 'inline';
+    }
+}
+
+// Stopping the Game
+
+function stopGame() {
+    stopTimer();
+
+    unregisterTouchHandlers();
+
+    var button = document.getElementById('check-answers-button');
+    var youWin = document.getElementById('you-win');
+    button.style.display = 'none';
+    youWin.style.display = 'inline';
+}
+
+function unregisterTouchHandlers() {
+    var targets = getTargets();
+    for (var i = 0; i < targets.length; i++) {
+        targets[i].removeEventListener('click', onTargetTouched);
+    }
+
+    var sources = getSources();
+    for (var i = 0; i < sources.length; i++) {
+        sources[i].removeEventListener('click', onSourceTouched);
     }
 }
