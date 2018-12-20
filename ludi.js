@@ -1,3 +1,71 @@
+// ludi.js
+//
+// The logic behind first-declension.html
+//
+// Internal Overview:
+//
+// * Starting the Game
+// * Stopping the Game
+// * The Timer
+// * Touch Event Handling
+// * The Hot Target
+// * Answer Checking
+// * Important Elements
+
+// Starting the Game
+
+function startGame() {
+    registerTouchHandlers();
+    shufflePile();
+    showPile();
+    showElement(getTimer());
+    startTimer();
+    hideElement(getStartButton());
+    showElement(getStopButton());
+}
+
+function registerTouchHandlers() {
+    for (var target of getTargets()) {
+        target.addEventListener('click', onTargetTouched);
+    }
+
+    for (var tile of getTiles()) {
+        tile.addEventListener('click', onTileTouched);
+    }
+}
+
+function shufflePile() {
+    var pile = getPile();
+    for (var i = pile.children.length; i > 0; i--) {
+        pile.appendChild(pile.children[Math.random() * i | 0]);
+    }
+}
+
+function showPile() {
+    for (var tile of getPile().children) {
+        showElement(tile);
+    }
+}
+
+// Stopping the Game
+
+function stopGame() {
+    stopTimer();
+    unregisterTouchHandlers();
+    hideElement(getStopButton());
+    showElement(getWinBanner());
+}
+
+function unregisterTouchHandlers() {
+    for (var target of getTargets()) {
+        target.removeEventListener('click', onTargetTouched);
+    }
+
+    for (var tile of getTiles()) {
+        tile.removeEventListener('click', onTileTouched);
+    }
+}
+
 // The Timer
 
 _timerId = null;
@@ -20,7 +88,7 @@ function formatTime(seconds) {
     return seconds + ' second(s)';
 }
 
-// Touch Handling
+// Touch Event Handling
 
 function onTargetTouched(event) {
 
@@ -243,58 +311,4 @@ function getWinBanner() {
 
 function getTimer() {
     return document.getElementById('timer');
-}
-
-// Starting the Game
-
-function startGame() {
-    registerTouchHandlers();
-    shufflePile();
-    showPile();
-    showElement(getTimer());
-    startTimer();
-    hideElement(getStartButton());
-    showElement(getStopButton());
-}
-
-function registerTouchHandlers() {
-    for (var target of getTargets()) {
-        target.addEventListener('click', onTargetTouched);
-    }
-
-    for (var tile of getTiles()) {
-        tile.addEventListener('click', onTileTouched);
-    }
-}
-
-function shufflePile() {
-    var pile = getPile();
-    for (var i = pile.children.length; i > 0; i--) {
-        pile.appendChild(pile.children[Math.random() * i | 0]);
-    }
-}
-
-function showPile() {
-    for (var tile of getPile().children) {
-        showElement(tile);
-    }
-}
-
-// Stopping the Game
-
-function stopGame() {
-    stopTimer();
-    unregisterTouchHandlers();
-    hideElement(getStopButton());
-    showElement(getWinBanner());
-}
-
-function unregisterTouchHandlers() {
-    for (var target of getTargets()) {
-        target.removeEventListener('click', onTargetTouched);
-    }
-
-    for (var tile of getTiles()) {
-        tile.removeEventListener('click', onTileTouched);
-    }
 }
