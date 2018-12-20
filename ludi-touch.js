@@ -13,7 +13,7 @@ function stopTimer() {
 
 function tick() {
     _elapsedTime++;
-    getTheTimer().innerHTML = formatTime(_elapsedTime);
+    getTimer().innerHTML = formatTime(_elapsedTime);
 }
 
 function formatTime(seconds) {
@@ -29,12 +29,12 @@ function onTargetTouched(event) {
         target = target.parentElement;
     }
 
-    moveSourceToThePile(target.firstChild);
+    moveSourceToPile(target.firstChild);
     setHotTarget(target);
 }
 
 function onSourceTouched(event) {
-    if (event.target.parentElement != getThePile()) {
+    if (event.target.parentElement != getPile()) {
         // This event will be handled by onTargetTouched.
         return;
     }
@@ -49,12 +49,12 @@ function onSourceTouched(event) {
 }
 
 function moveSourceToHotTarget(source) {
-    var hotTarget = getTheHotTarget();
+    var hotTarget = getHotTarget();
     if (hotTarget == null) {
         return;
     }
 
-    moveSourceToThePile(hotTarget.firstChild);
+    moveSourceToPile(hotTarget.firstChild);
 
     cloneOfSource = source.cloneNode();
     cloneOfSource.id = decorateSourceId(cloneOfSource.id);
@@ -64,7 +64,7 @@ function moveSourceToHotTarget(source) {
     removeErroneousness(hotTarget);
 }
 
-function moveSourceToThePile(source) {
+function moveSourceToPile(source) {
     if (source == null) {
         return;
     }
@@ -99,7 +99,7 @@ function setHotTarget(hotTarget) {
 
 function advanceHotTarget() {
     // Remove hotness from the current hot target.
-    var hotTarget = getTheHotTarget();
+    var hotTarget = getHotTarget();
     if (hotTarget == null) {
         return;
     }
@@ -215,7 +215,7 @@ function removeErroneousness(target) {
 
 // Important Elements
 
-function getThePile() {
+function getPile() {
     return document.getElementById('the-pile');
 }
 
@@ -223,7 +223,7 @@ function getTargets() {
     return document.getElementsByClassName('target');
 }
 
-function getTheHotTarget() {
+function getHotTarget() {
     return document.getElementsByClassName('hot')[0];
 }
 
@@ -239,7 +239,7 @@ function getStopButton() {
     return document.getElementById('check-answers-button');
 }
 
-function getTheTimer() {
+function getTimer() {
     return document.getElementById('timer');
 }
 
@@ -247,9 +247,9 @@ function getTheTimer() {
 
 function startGame() {
     registerTouchHandlers();
-    shuffleThePile();
-    showThePile();
-    showElement(getTheTimer());
+    shufflePile();
+    showPile();
+    showElement(getTimer());
     startTimer();
 
     hideElement(getStartButton());
@@ -268,15 +268,15 @@ function registerTouchHandlers() {
     }
 }
 
-function shuffleThePile() {
-    var thePile = getThePile();
+function shufflePile() {
+    var thePile = getPile();
     for (var i = thePile.children.length; i > 0; i--) {
         thePile.appendChild(thePile.children[Math.random() * i | 0]);
     }
 }
 
-function showThePile() {
-    var thePile = getThePile();
+function showPile() {
+    var thePile = getPile();
     for (var i = 0; i < thePile.children.length; i++) {
         thePile.children.item(i).style.display = 'inline';
     }
