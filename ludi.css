@@ -3,7 +3,11 @@
 }
 
 .target-row {
-    height: 60px;
+    height: 56px;
+}
+
+td {
+    padding: 1px;
 }
 
 .target {
@@ -21,13 +25,14 @@
 }
 
 .pile {
-    border: 1px solid black;
+    border: 2px solid black;
     width: 240px;
     text-align: center;
 }
 
 .tile {
     border: 1px solid black;
+    padding: 6px;
 }
 
 .assigned {
