@@ -1,9 +1,28 @@
 <?xml version="1.0"?>
 <project name="ludi">
 
+  <target name="deploy-to-web">
+    <property file="${basedir}/private/ftp.properties"/>
+    <ftp server="fideidepositum.org"
+         userid="${ftp.userid}"
+         password="${ftp.password}"
+         remotedir="/www/ludi"
+         action="put"
+         verbose="yes"
+         passive="yes"
+         newer="yes">
+        <fileset dir="${basedir}">
+          <include name="*.png"/>
+          <include name="*.html"/>
+          <include name="*.js"/>
+          <include name="*.css"/>
+        </fileset>
+    </ftp>
+  </target>
+
   <property name="www.dir" value="/var/www/html/ludi"/>
 
-  <target name="deploy-locally">
+  <target name="deploy-to-local">
     <copy todir="${www.dir}">
       <fileset dir="${basedir}">
         <include name="*.png"/>
