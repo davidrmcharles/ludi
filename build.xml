@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project name="ludi">
+
+  <property name="www.dir" value="/var/www/html/ludi"/>
+
+  <target name="deploy-locally">
+    <copy todir="${www.dir}">
+      <fileset dir="${basedir}">
+        <include name="*.png"/>
+        <include name="*.html"/>
+        <include name="*.js"/>
+        <include name="*.css"/>
+      </fileset>
+    </copy>
+  </target>
+
+</project>
