@@ -283,7 +283,7 @@ function removeErroneousness(target) {
 // Important Elements
 
 function getPile() {
-    return document.getElementById('the-pile');
+    return document.getElementById('pile');
 }
 
 function getTargets() {
@@ -299,11 +299,11 @@ function getTiles() {
 }
 
 function getStartButton() {
-    return document.getElementById('start-game-button');
+    return document.getElementById('start-button');
 }
 
 function getStopButton() {
-    return document.getElementById('check-answers-button');
+    return document.getElementById('stop-button');
 }
 
 function getWinBanner() {
