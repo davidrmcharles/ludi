@@ -1,3 +1,11 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 .case-row-heading {
     font-weight: bold;
 }
@@ -11,13 +19,13 @@ td {
 }
 
 .target {
-    border: 2px solid black;
+    border: 1px solid black;
     width: 120px;
     text-align: center;
 }
 
 .hot {
-    border: 2px solid limegreen;
+    border: 4px solid limegreen;
 }
 
 .erroneous {
