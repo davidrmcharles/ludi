@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
-<project name="ludi">
+<project name="ludi"
+         xmlns:if="ant:if"
+         xmlns:unless="ant:unless">
 
-  <target name="deploy-to-web">
+  <target name="deploy-to-web"
+          description="Deploy to Internet-accessible server.">
     <property file="${basedir}/private/ftp.properties"/>
     <ftp server="fideidepositum.org"
          userid="${ftp.userid}"
@@ -11,18 +14,19 @@
          verbose="yes"
          passive="yes"
          newer="yes">
-        <fileset dir="${basedir}">
-          <include name="*.png"/>
-          <include name="*.html"/>
-          <include name="*.js"/>
-          <include name="*.css"/>
-        </fileset>
+      <fileset dir="${basedir}">
+        <include name="*.png"/>
+        <include name="*.html"/>
+        <include name="*.js"/>
+        <include name="*.css"/>
+      </fileset>
     </ftp>
   </target>
 
   <property name="www.dir" value="/var/www/html/ludi"/>
 
-  <target name="deploy-to-local">
+  <target name="deploy-to-local"
+          description="Deploy to local apache server.">
     <copy todir="${www.dir}">
       <fileset dir="${basedir}">
         <include name="*.png"/>
@@ -31,6 +35,31 @@
         <include name="*.css"/>
       </fileset>
     </copy>
+  </target>
+
+  <target name="setest"
+          description="Run all Selenium WebDriver tests."
+          depends="selenium-installed">
+    <exec executable="${basedir}/venv/bin/python3.4">
+      <arg line="-m unittest discover -p setest_*.py"/>
+    </exec>
+  </target>
+
+  <target name="selenium-installed"
+          depends="venv-created">
+    <available property="selenium.dir.exists" file="${basedir}/venv/lib/python3.4/site-packages/selenium" type="dir"/>
+    <echo if:set="selenium.dir.exists">Selenium is already installed.</echo>
+    <exec unless:set="selenium.dir.exists" executable="${basedir}/venv/bin/pip3.4">
+      <arg line="install selenium"/>
+    </exec>
+  </target>
+
+  <target name="venv-created">
+    <available property="venv.dir.exists" file="${basedir}/venv" type="dir"/>
+    <echo if:set="venv.dir.exists">Virtual environment is already created.</echo>
+    <exec unless:set="venv.dir.exists" executable="python3.4">
+      <arg line="-m venv venv"/>
+    </exec>
   </target>
 
 </project>
