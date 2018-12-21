@@ -24,8 +24,7 @@ td {
     background-color: salmon;
 }
 
-.pile {
-    border: 2px solid black;
+#pile {
     width: 240px;
     text-align: center;
 }
@@ -45,4 +44,9 @@ td {
 
 .centered {
     text-align: center;
+}
+
+button {
+    width: 100%;
+    height: 56px;
 }

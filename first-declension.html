@@ -10,6 +10,10 @@
   <body>
     <table>
       <tr>
+        <td/>
+        <td class="centered" colspan="2">First Declension</td>
+      </tr>
+      <tr>
         <th/>
         <th>Singular</th>
         <th>Plural</th>
@@ -41,7 +45,7 @@
       </tr>
       <tr>
         <td/>
-        <td id="pile" class="pile" colspan="2">
+        <td id="pile" colspan="2">
           <img src="ending-a.png" class="tile hidden" id="ending-a.0" ondragstart="return false;"/>
           <img src="ending-ae.png" class="tile hidden" id="ending-ae.0" ondragstart="return false;"/>
           <img src="ending-ae.png" class="tile hidden" id="ending-ae.1" ondragstart="return false;"/>
@@ -52,17 +56,14 @@
           <img src="ending-is.png" class="tile hidden" id="ending-is.0" ondragstart="return false;"/>
           <img src="ending-as.png" class="tile hidden" id="ending-as" ondragstart="return false;"/>
           <img src="ending-is.png" class="tile hidden" id="ending-is.1" ondragstart="return false;"/>
-        </td>
-      </tr>
-      <tr id="button-row">
-        <td colspan="3" class="centered">
-          <button id="start-button" type="button" style="width: 100%;" onclick="startGame()">Start</button>
-          <button id="stop-button" class="hidden" type="button" style="width: 100%;" onclick="checkAnswers()">I'm Done</button>
+          <button id="start-button" type="button" onclick="startGame()">Start</button>
+          <button id="stop-button" class="hidden" type="button" onclick="checkAnswers()">I'm Done</button>
           <h3 id="you-win" class="hidden">You Win!</h3>
         </td>
       </tr>
       <tr id="timer-row">
-        <td id="timer" class="hidden centered" colspan="3" >0 second(s)</td>
+        <td/>
+        <td id="timer" class="hidden centered" colspan="2" >0 second(s)</td>
       </tr>
     </table>
     <ul id="answers" class="hidden">

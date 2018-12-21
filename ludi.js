@@ -32,11 +32,10 @@ window.onload = function() {
 function startGame() {
     registerTouchHandlers();
     shufflePile();
-    showPile();
+    showTiles();
     showElement(getTimer());
     startTimer();
     hideElement(getStartButton());
-    showElement(getStopButton());
     setHotTarget(document.getElementById('nominative-singular'));
 }
 
@@ -57,9 +56,19 @@ function shufflePile() {
     }
 }
 
-function showPile() {
-    for (var tile of getPile().children) {
-        showElement(tile);
+function showTiles() {
+    for (var child of getPile().children) {
+        if (child.classList.contains('tile')) {
+            showElement(child);
+        }
+    }
+}
+
+function hideTiles() {
+    for (var child of getPile().children) {
+        if (child.classList.contains('tile')) {
+            hideElement(child);
+        }
     }
 }
 
@@ -115,6 +124,8 @@ function onTargetTouched(event) {
 
     moveTileToPile(target.firstChild);
     setHotTarget(target);
+    hideElement(getStopButton());
+    showTiles();
 }
 
 function onTileTouched(event) {
@@ -129,7 +140,11 @@ function onTileTouched(event) {
     }
 
     moveTileToHotTarget(event.target);
-    advanceHotTarget();
+    var allTargetsAreFull = advanceHotTarget();
+    if (allTargetsAreFull) {
+        hideTiles();
+        showElement(getStopButton());
+    }
 }
 
 function moveTileToHotTarget(tile) {
@@ -186,7 +201,7 @@ function advanceHotTarget() {
     // Remove hotness from the current hot target.
     var hotTarget = getHotTarget();
     if (hotTarget == null) {
-        return;
+        return false;
     }
     removeHotness(hotTarget);
 
@@ -194,6 +209,9 @@ function advanceHotTarget() {
     var nextHotTarget = nextEmptyOrErroneousTarget(hotTarget);
     if (nextHotTarget != null) {
         addHotness(nextHotTarget);
+        return false;
+    } else {
+        return true;
     }
 }
 
