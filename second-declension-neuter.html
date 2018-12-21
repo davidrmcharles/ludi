@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ludi - Second Declension (Neuter)</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="ludi.css"/>
+    <script src="ludi.js"></script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td/>
+        <td class="centered" colspan="2">Second Declension (Neuter)</td>
+      </tr>
+      <tr>
+        <th/>
+        <th>Singular</th>
+        <th>Plural</th>
+      </tr>
+      <tr class="target-row">
+        <td class="case-row-heading">Nom.</td>
+        <td id="nominative-singular" class="target"></td>
+        <td id="nominative-plural" class="target"></td>
+      </tr>
+      <tr class="target-row">
+        <td class="case-row-heading">Gen.</td>
+        <td id="genitive-singular" class="target"></td>
+        <td id="genitive-plural" class="target"></td>
+      </tr>
+      <tr class="target-row">
+        <td class="case-row-heading">Dat.</td>
+        <td id="dative-singular" class="target"></td>
+        <td id="dative-plural" class="target"></td>
+      </tr>
+      <tr class="target-row">
+        <td class="case-row-heading">Acc.</td>
+        <td id="accusative-singular" class="target"></td>
+        <td id="accusative-plural" class="target"></td>
+      </tr>
+      <tr class="target-row">
+        <td class="case-row-heading">Abl.</td>
+        <td id="ablative-singular" class="target"></td>
+        <td id="ablative-plural" class="target"></td>
+      </tr>
+      <tr>
+        <td/>
+        <td id="pile" colspan="2">
+          <img src="ending-um.png" class="tile hidden" id="ending-um.0" ondragstart="return false;"/>
+          <img src="ending-i.png" class="tile hidden" id="ending-i.0" ondragstart="return false;"/>
+          <img src="ending-o.png" class="tile hidden" id="ending-o.0" ondragstart="return false;"/>
+          <img src="ending-um.png" class="tile hidden" id="ending-um.1" ondragstart="return false;"/>
+          <img src="ending-o.png" class="tile hidden" id="ending-o.1" ondragstart="return false;"/>
+          <img src="ending-a.png" class="tile hidden" id="ending-a.0" ondragstart="return false;"/>
+          <img src="ending-orum.png" class="tile hidden" id="ending-orum" ondragstart="return false;"/>
+          <img src="ending-is.png" class="tile hidden" id="ending-is.0" ondragstart="return false;"/>
+          <img src="ending-a.png" class="tile hidden" id="ending-a.1" ondragstart="return false;"/>
+          <img src="ending-is.png" class="tile hidden" id="ending-is.1" ondragstart="return false;"/>
+          <button id="start-button" type="button" onclick="startGame()">Start</button>
+          <button id="stop-button" class="hidden" type="button" onclick="checkAnswers()">I'm Done</button>
+          <h3 id="you-win" class="hidden">You Win!</h3>
+        </td>
+      </tr>
+      <tr id="timer-row">
+        <td/>
+        <td id="timer" class="hidden centered" colspan="2" >0 second(s)</td>
+      </tr>
+    </table>
+    <ul id="answers" class="hidden">
+      <li id="nominative-singular">ending-um</li>
+      <li id="genitive-singular">ending-i</li>
+      <li id="dative-singular">ending-o</li>
+      <li id="accusative-singular">ending-um</li>
+      <li id="ablative-singular">ending-o</li>
+      <li id="nominative-plural">ending-a</li>
+      <li id="genitive-plural">ending-orum</li>
+      <li id="dative-plural">ending-is</li>
+      <li id="accusative-plural">ending-a</li>
+      <li id="ablative-plural">ending-is</li>
+    </ul>
+  </body>
+</html>
