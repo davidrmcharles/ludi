@@ -30,6 +30,7 @@ window.onload = function() {
 // Starting the Game
 
 function startGame() {
+    initAudio();
     registerTouchHandlers();
     shufflePile();
     showTiles();
@@ -37,6 +38,26 @@ function startGame() {
     startTimer();
     hideElement(getStartButton());
     setHotTarget(document.getElementById('nominative-singular'));
+}
+
+function initAudio() {
+    _audioContext = new window.AudioContext();
+    initAudioElements();
+}
+
+function initAudioElements() {
+    _audioElements = []
+    var audioElements = document.getElementsByClassName('audio');
+    for (var audioElement of audioElements) {
+        var media = _audioContext.createMediaElementSource(audioElement);
+        media.connect(_audioContext.destination);
+        var endingId = srcToEndingId(audioElement.getAttribute('src'));
+        _audioElements[endingId] = audioElement
+    }
+}
+
+function srcToEndingId(src) {
+    return src.substring(0, src.indexOf('-'));
 }
 
 function registerTouchHandlers() {
@@ -139,12 +160,27 @@ function onTileTouched(event) {
         return;
     }
 
+    playTileSound(event.target);
     moveTileToHotTarget(event.target);
     var allTargetsAreFull = advanceHotTarget();
     if (allTargetsAreFull) {
         hideTiles();
         showElement(getStopButton());
     }
+}
+
+function playTileSound(tile) {
+    var endingId = tileIdToEndingId(tile.id);
+    _audioElements[endingId].play();
+}
+
+function tileIdToEndingId(tileId) {
+    var indexOfDash = tileId.indexOf('-');
+    var indexOfDot = tileId.indexOf('.');
+    if (indexOfDot == -1) {
+        indexOfDot = tileId.length;
+    }
+    return tileId.substring(indexOfDash + 1, indexOfDot);
 }
 
 function moveTileToHotTarget(tile) {

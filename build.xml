@@ -29,6 +29,7 @@
           description="Deploy to local apache server.">
     <copy todir="${www.dir}">
       <fileset dir="${basedir}">
+        <include name="*.mp3"/>
         <include name="*.png"/>
         <include name="*.html"/>
         <include name="*.js"/>
