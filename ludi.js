@@ -51,13 +51,13 @@ function initAudioElements() {
     for (var audioElement of audioElements) {
         var media = _audioContext.createMediaElementSource(audioElement);
         media.connect(_audioContext.destination);
-        var endingId = srcToEndingId(audioElement.getAttribute('src'));
+        var endingId = audioIdToEndingId(audioElement.id)
         _audioElements[endingId] = audioElement
     }
 }
 
-function srcToEndingId(src) {
-    return src.substring(0, src.indexOf('-'));
+function audioIdToEndingId(audioId) {
+    return audioId.substring(audioId.indexOf('-') + 1);
 }
 
 function registerTouchHandlers() {
@@ -176,11 +176,7 @@ function playTileSound(tile) {
 
 function tileIdToEndingId(tileId) {
     var indexOfDash = tileId.indexOf('-');
-    var indexOfDot = tileId.indexOf('.');
-    if (indexOfDot == -1) {
-        indexOfDot = tileId.length;
-    }
-    return tileId.substring(indexOfDash + 1, indexOfDot);
+    return tileId.substring(indexOfDash + 1);
 }
 
 function moveTileToHotTarget(tile) {
