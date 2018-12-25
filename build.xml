@@ -15,6 +15,7 @@
          passive="yes"
          newer="yes">
       <fileset dir="${basedir}">
+        <include name="*.mp3"/>
         <include name="*.png"/>
         <include name="*.html"/>
         <include name="*.js"/>
