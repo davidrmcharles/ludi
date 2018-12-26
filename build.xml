@@ -15,7 +15,7 @@
          passive="yes"
          newer="yes">
       <fileset dir="${basedir}">
-        <include name="*.mp3"/>
+        <include name="**/*.mp3"/>
         <include name="*.png"/>
         <include name="*.html"/>
         <include name="*.js"/>
@@ -30,7 +30,7 @@
           description="Deploy to local apache server.">
     <copy todir="${www.dir}">
       <fileset dir="${basedir}">
-        <include name="*.mp3"/>
+        <include name="**/*.mp3"/>
         <include name="*.png"/>
         <include name="*.html"/>
         <include name="*.js"/>
