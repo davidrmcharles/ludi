@@ -43,6 +43,8 @@ function startGame() {
 function initAudio() {
     _audioContext = new window.AudioContext();
     initAudioElements();
+    initShuffleAudioElement();
+    initYayAudioElement();
 }
 
 function initAudioElements() {
@@ -54,6 +56,18 @@ function initAudioElements() {
         var endingId = audioIdToEndingId(audioElement.id)
         _audioElements[endingId] = audioElement
     }
+}
+
+function initShuffleAudioElement() {
+    _shuffleAudioElement = document.getElementById('shuffle');
+    var media = _audioContext.createMediaElementSource(_shuffleAudioElement);
+    media.connect(_audioContext.destination);
+}
+
+function initYayAudioElement() {
+    _yayAudioElement = document.getElementById('yay');
+    var media = _audioContext.createMediaElementSource(_yayAudioElement);
+    media.connect(_audioContext.destination);
 }
 
 function audioIdToEndingId(audioId) {
@@ -75,6 +89,11 @@ function shufflePile() {
     for (var i = pile.children.length; i > 0; i--) {
         pile.appendChild(pile.children[Math.random() * i | 0]);
     }
+    playShuffleSound();
+}
+
+function playShuffleSound() {
+    _shuffleAudioElement.play();
 }
 
 function showTiles() {
@@ -100,6 +119,11 @@ function stopGame() {
     unregisterTouchHandlers();
     hideElement(getStopButton());
     showElement(getWinBanner());
+    playYaySound();
+}
+
+function playYaySound() {
+    _yayAudioElement.play();
 }
 
 function unregisterTouchHandlers() {
