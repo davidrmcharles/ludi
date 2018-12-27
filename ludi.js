@@ -205,6 +205,16 @@ function tileIdToEndingId(tileId) {
     return tileId.substring(indexOfDash + 1);
 }
 
+function tileIdToEnding(tileId) {
+    var indexOfDash = tileId.indexOf('-');
+    var indexOfDot = tileId.indexOf('.');
+    if (indexOfDot < 0) {
+        tileId.length;
+    }
+    return tileId.substring(indexOfDash + 1, indexOfDot);
+
+}
+
 function moveTileToHotTarget(tile) {
     var hotTarget = getHotTarget();
     if (hotTarget == null) {
@@ -325,8 +335,8 @@ function checkAnswer(target) {
     }
 
     var answer = _answers[target.id];
-    var tileId = target.firstChild.id.split('.')[0];
-    if (tileId == answer) {
+    var ending = tileIdToEnding(target.firstChild.id);
+    if (ending == answer) {
         removeErroneousness(target);
         return true;
     } else {

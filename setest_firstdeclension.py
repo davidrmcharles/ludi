@@ -45,16 +45,16 @@ class ShortestPathToWinTestCase(unittest.TestCase):
     def _perform_clicks(self):
         element_ids = (
             'start-button',
-            'ending-a.0',
-            'ending-ae.0',
-            'ending-ae.1',
-            'ending-am',
-            'ending-a.1',
-            'ending-ae.2',
-            'ending-arum',
-            'ending-is.0',
-            'ending-as',
-            'ending-is.1',
+            'tile-a.0',
+            'tile-ae.0',
+            'tile-ae.1',
+            'tile-am',
+            'tile-a.1',
+            'tile-ae.2',
+            'tile-arum',
+            'tile-is.0',
+            'tile-as',
+            'tile-is.1',
         )
         for element_id in element_ids:
             self.driver.find_element_by_id(element_id).click()

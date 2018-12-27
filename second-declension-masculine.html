@@ -46,16 +46,16 @@
       <tr>
         <td/>
         <td id="pile" colspan="2">
-          <img src="images/endings/us.png" class="tile hidden" id="ending-us" ondragstart="return false;"/>
-          <img src="images/endings/i.png" class="tile hidden" id="ending-i.0" ondragstart="return false;"/>
-          <img src="images/endings/o.png" class="tile hidden" id="ending-o.0" ondragstart="return false;"/>
-          <img src="images/endings/um.png" class="tile hidden" id="ending-um" ondragstart="return false;"/>
-          <img src="images/endings/o.png" class="tile hidden" id="ending-o.1" ondragstart="return false;"/>
-          <img src="images/endings/i.png" class="tile hidden" id="ending-i.1" ondragstart="return false;"/>
-          <img src="images/endings/orum.png" class="tile hidden" id="ending-orum" ondragstart="return false;"/>
-          <img src="images/endings/is.png" class="tile hidden" id="ending-is.0" ondragstart="return false;"/>
-          <img src="images/endings/os.png" class="tile hidden" id="ending-os" ondragstart="return false;"/>
-          <img src="images/endings/is.png" class="tile hidden" id="ending-is.1" ondragstart="return false;"/>
+          <img id="tile-us" class="tile hidden" src="images/endings/us.png" ondragstart="return false;"/>
+          <img id="tile-i.0" class="tile hidden" src="images/endings/i.png" ondragstart="return false;"/>
+          <img id="tile-o.0" class="tile hidden" src="images/endings/o.png" ondragstart="return false;"/>
+          <img id="tile-um" class="tile hidden" src="images/endings/um.png" ondragstart="return false;"/>
+          <img id="tile-o.1" class="tile hidden" src="images/endings/o.png" ondragstart="return false;"/>
+          <img id="tile-i.1" class="tile hidden" src="images/endings/i.png" ondragstart="return false;"/>
+          <img id="tile-orum" class="tile hidden" src="images/endings/orum.png" ondragstart="return false;"/>
+          <img id="tile-is.0" class="tile hidden" src="images/endings/is.png" ondragstart="return false;"/>
+          <img id="tile-os" class="tile hidden" src="images/endings/os.png" ondragstart="return false;"/>
+          <img id="tile-is.1" class="tile hidden" src="images/endings/is.png" ondragstart="return false;"/>
           <button id="start-button" type="button" onclick="startGame()">Start</button>
           <h3 id="you-win" class="hidden">You Win!</h3>
         </td>
@@ -66,16 +66,28 @@
       </tr>
     </table>
     <ul id="answers" class="hidden">
-      <li id="nominative-singular">ending-us</li>
-      <li id="genitive-singular">ending-i</li>
-      <li id="dative-singular">ending-o</li>
-      <li id="accusative-singular">ending-um</li>
-      <li id="ablative-singular">ending-o</li>
-      <li id="nominative-plural">ending-i</li>
-      <li id="genitive-plural">ending-orum</li>
-      <li id="dative-plural">ending-is</li>
-      <li id="accusative-plural">ending-os</li>
-      <li id="ablative-plural">ending-is</li>
+      <li id="nominative-singular">us</li>
+      <li id="genitive-singular">i</li>
+      <li id="dative-singular">o</li>
+      <li id="accusative-singular">um</li>
+      <li id="ablative-singular">o</li>
+      <li id="nominative-plural">i</li>
+      <li id="genitive-plural">orum</li>
+      <li id="dative-plural">is</li>
+      <li id="accusative-plural">os</li>
+      <li id="ablative-plural">is</li>
     </ul>
+    <audio id="audio-us" class="audio" src="audio/endings/daddy/us.mp3" type="audio/mpeg"/>
+    <audio id="audio-i.0" class="audio" src="audio/endings/daddy/i.0.mp3" type="audio/mpeg"/>
+    <audio id="audio-o.0" class="audio" src="audio/endings/daddy/o.0.mp3" type="audio/mpeg"/>
+    <audio id="audio-um" class="audio" src="audio/endings/daddy/um.0.mp3" type="audio/mpeg"/>
+    <audio id="audio-o.1" class="audio" src="audio/endings/daddy/o.1.mp3" type="audio/mpeg"/>
+    <audio id="audio-i.1" class="audio" src="audio/endings/daddy/i.1.mp3" type="audio/mpeg"/>
+    <audio id="audio-orum" class="audio" src="audio/endings/daddy/orum.mp3" type="audio/mpeg"/>
+    <audio id="audio-is.0" class="audio" src="audio/endings/daddy/is.0.mp3" type="audio/mpeg"/>
+    <audio id="audio-os" class="audio" src="audio/endings/daddy/os.mp3" type="audio/mpeg"/>
+    <audio id="audio-is.1" class="audio" src="audio/endings/daddy/is.1.mp3" type="audio/mpeg"/>
+    <audio id="shuffle" src="audio/shuffle.mp3" type="audio/mpeg"/>
+    <audio id="yay" src="audio/yay.mp3" type="audio/mpeg"/>
   </body>
 </html>
