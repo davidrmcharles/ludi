@@ -32,7 +32,7 @@ window.onload = function() {
 function startGame() {
     initAudio();
     registerTouchHandlers();
-    shufflePile();
+    shuffleTiles();
     showTiles();
     showElement(getTimer());
     startTimer();
@@ -84,7 +84,7 @@ function registerTouchHandlers() {
     }
 }
 
-function shufflePile() {
+function shuffleTiles() {
     var pile = getPile();
     for (var i = pile.children.length; i > 0; i--) {
         pile.appendChild(pile.children[Math.random() * i | 0]);
