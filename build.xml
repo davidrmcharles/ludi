@@ -16,7 +16,7 @@
          newer="yes">
       <fileset dir="${basedir}">
         <include name="**/*.mp3"/>
-        <include name="*.png"/>
+        <include name="**/*.png"/>
         <include name="*.html"/>
         <include name="*.js"/>
         <include name="*.css"/>
@@ -31,7 +31,7 @@
     <copy todir="${www.dir}">
       <fileset dir="${basedir}">
         <include name="**/*.mp3"/>
-        <include name="*.png"/>
+        <include name="**/*.png"/>
         <include name="*.html"/>
         <include name="*.js"/>
         <include name="*.css"/>
