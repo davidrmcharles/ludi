@@ -55,7 +55,6 @@ class ShortestPathToWinTestCase(unittest.TestCase):
             'ending-is.0',
             'ending-as',
             'ending-is.1',
-            'stop-button',
         )
         for element_id in element_ids:
             self.driver.find_element_by_id(element_id).click()
