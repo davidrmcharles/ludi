@@ -115,15 +115,19 @@ function hideTiles() {
 // Stopping the Game
 
 function stopGame() {
+    hideTiles();
     stopTimer();
     unregisterTouchHandlers();
-    hideElement(getStopButton());
     showElement(getWinBanner());
     playYaySound();
 }
 
 function playYaySound() {
-    _yayAudioElement.play();
+    setTimeout(
+        function() {
+            _yayAudioElement.play();
+        },
+        1000);
 }
 
 function unregisterTouchHandlers() {
@@ -169,7 +173,6 @@ function onTargetTouched(event) {
 
     moveTileToPile(target.firstChild);
     setHotTarget(target);
-    hideElement(getStopButton());
     showTiles();
 }
 
@@ -188,8 +191,7 @@ function onTileTouched(event) {
     moveTileToHotTarget(event.target);
     var allTargetsAreFull = advanceHotTarget();
     if (allTargetsAreFull) {
-        hideTiles();
-        showElement(getStopButton());
+        checkAnswers();
     }
 }
 
@@ -365,10 +367,6 @@ function getTiles() {
 
 function getStartButton() {
     return document.getElementById('start-button');
-}
-
-function getStopButton() {
-    return document.getElementById('stop-button');
 }
 
 function getWinBanner() {
