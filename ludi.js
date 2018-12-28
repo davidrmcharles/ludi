@@ -40,7 +40,13 @@ function startGame() {
     setHotTarget(document.getElementById('nominative-singular'));
 }
 
+_audioContext = null;
+
 function initAudio() {
+    if (_audioContext != null) {
+        return;
+    }
+
     _audioContext = new window.AudioContext();
     initAudioElements();
     initShuffleAudioElement();
@@ -89,6 +95,11 @@ function shuffleTiles() {
     for (var i = pile.children.length; i > 0; i--) {
         pile.appendChild(pile.children[Math.random() * i | 0]);
     }
+
+    for (var target of getTargets()) {
+        moveTileToPile(target.firstChild);
+    }
+
     playShuffleSound();
 }
 
@@ -120,6 +131,12 @@ function stopGame() {
     unregisterTouchHandlers();
     showElement(getWinBanner());
     playYaySound();
+    setTimeout(
+        function() {
+            hideElement(getWinBanner());
+            showElement(getStartButton());
+        },
+        3000);
 }
 
 function playYaySound() {
@@ -143,9 +160,11 @@ function unregisterTouchHandlers() {
 // The Timer
 
 _timerId = null;
-_elapsedTime = 0
+_elapsedTime = null;
 
 function startTimer() {
+    _elapsedTime = 0;
+    getTimer().innerHTML = formatTime(_elapsedTime);
     _timerId = setInterval(tick, 1000);
 }
 
