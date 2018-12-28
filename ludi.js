@@ -34,8 +34,7 @@ function startGame() {
     registerTouchHandlers();
     shuffleTiles();
     showTiles();
-    showElement(getTimer());
-    startTimer();
+    _timer.start();
     hideElement(getStartButton());
     setHotTarget(document.getElementById('nominative-singular'));
 }
@@ -127,7 +126,7 @@ function hideTiles() {
 
 function stopGame() {
     hideTiles();
-    stopTimer();
+    _timer.stop();
     unregisterTouchHandlers();
     showElement(getWinBanner());
     playYaySound();
@@ -157,28 +156,37 @@ function unregisterTouchHandlers() {
     }
 }
 
-// The Timer
+_timer = {
 
-_timerId = null;
-_elapsedTime = null;
+    _timerId: null,
+    _elapsedTime: null,
+    _timerElement: null,
 
-function startTimer() {
-    _elapsedTime = 0;
-    getTimer().innerHTML = formatTime(_elapsedTime);
-    _timerId = setInterval(tick, 1000);
-}
+    start: function() {
+        this._elapsedTime = 0;
+        this._timerElement = document.getElementById('timer');
+        this._updateDisplay();
+        showElement(this._timerElement);
+        this._timerId = setInterval(
+            function() {
+                _timer._tick();
+            },
+            1000);
+    },
 
-function stopTimer() {
-    clearInterval(_timerId);
-}
+    stop: function() {
+        clearInterval(this._timerId);
+    },
 
-function tick() {
-    _elapsedTime++;
-    getTimer().innerHTML = formatTime(_elapsedTime);
-}
+    _tick: function() {
+        this._elapsedTime++;
+        this._updateDisplay();
+    },
 
-function formatTime(seconds) {
-    return seconds + ' second(s)';
+    _updateDisplay: function() {
+        this._timerElement.innerHTML = this._elapsedTime + ' second(s)';
+    },
+
 }
 
 // Touch Event Handling
@@ -402,6 +410,3 @@ function getWinBanner() {
     return document.getElementById('you-win');
 }
 
-function getTimer() {
-    return document.getElementById('timer');
-}
