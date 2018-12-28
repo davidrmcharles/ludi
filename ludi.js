@@ -30,7 +30,7 @@ window.onload = function() {
 // Starting the Game
 
 function startGame() {
-    initAudio();
+    _audio.init();
     registerTouchHandlers();
     shuffleTiles();
     showTiles();
@@ -39,44 +39,74 @@ function startGame() {
     setHotTarget(document.getElementById('nominative-singular'));
 }
 
-_audioContext = null;
+_audio = {
 
-function initAudio() {
-    if (_audioContext != null) {
-        return;
-    }
+    _context: null,
+    _tileAudioElements: [],
+    _shuffleAudioElement: null,
+    _yayAudioElement: null,
 
-    _audioContext = new window.AudioContext();
-    initAudioElements();
-    initShuffleAudioElement();
-    initYayAudioElement();
-}
+    init: function() {
+        if (this._context != null) {
+            return;
+        }
 
-function initAudioElements() {
-    _audioElements = []
-    var audioElements = document.getElementsByClassName('audio');
-    for (var audioElement of audioElements) {
-        var media = _audioContext.createMediaElementSource(audioElement);
-        media.connect(_audioContext.destination);
-        var endingId = audioIdToEndingId(audioElement.id)
-        _audioElements[endingId] = audioElement
-    }
-}
+        this._context = new window.AudioContext();
+        this._initTileAudioElements();
+        this._initShuffleAudioElement();
+        this._initYayAudioElement();
+    },
 
-function initShuffleAudioElement() {
-    _shuffleAudioElement = document.getElementById('shuffle');
-    var media = _audioContext.createMediaElementSource(_shuffleAudioElement);
-    media.connect(_audioContext.destination);
-}
+    _initTileAudioElements: function() {
+        var audioElements = document.getElementsByClassName('audio');
+        for (var audioElement of audioElements) {
+            this._connectAudioElement(audioElement);
+            var endingId = this._audioIdToEndingId(audioElement.id)
+            this._tileAudioElements[endingId] = audioElement
+        }
+    },
 
-function initYayAudioElement() {
-    _yayAudioElement = document.getElementById('yay');
-    var media = _audioContext.createMediaElementSource(_yayAudioElement);
-    media.connect(_audioContext.destination);
-}
+    _initShuffleAudioElement: function() {
+        this._shuffleAudioElement = document.getElementById('shuffle');
+        this._connectAudioElement(this._shuffleAudioElement);
+    },
 
-function audioIdToEndingId(audioId) {
-    return audioId.substring(audioId.indexOf('-') + 1);
+    _initYayAudioElement: function() {
+        this._yayAudioElement = document.getElementById('yay');
+        this._connectAudioElement(this._yayAudioElement);
+    },
+
+    _connectAudioElement: function(audioElement) {
+        var media = this._context.createMediaElementSource(audioElement);
+        media.connect(this._context.destination);
+    },
+
+    playTileSound: function(tile) {
+        var endingId = this._tileIdToEndingId(tile.id);
+        this._tileAudioElements[endingId].play();
+    },
+
+    playShuffleSound: function() {
+        this._shuffleAudioElement.play();
+    },
+
+    playYaySound: function() {
+        setTimeout(
+            function() {
+                _audio._yayAudioElement.play();
+            },
+            1000);
+    },
+
+    _audioIdToEndingId: function(audioId) {
+        return audioId.substring(audioId.indexOf('-') + 1);
+    },
+
+    _tileIdToEndingId: function(tileId) {
+        var indexOfDash = tileId.indexOf('-');
+        return tileId.substring(indexOfDash + 1);
+    },
+
 }
 
 function registerTouchHandlers() {
@@ -99,11 +129,7 @@ function shuffleTiles() {
         moveTileToPile(target.firstChild);
     }
 
-    playShuffleSound();
-}
-
-function playShuffleSound() {
-    _shuffleAudioElement.play();
+    _audio.playShuffleSound();
 }
 
 function showTiles() {
@@ -129,21 +155,13 @@ function stopGame() {
     _timer.stop();
     unregisterTouchHandlers();
     showElement(getWinBanner());
-    playYaySound();
+    _audio.playYaySound();
     setTimeout(
         function() {
             hideElement(getWinBanner());
             showElement(getStartButton());
         },
         3000);
-}
-
-function playYaySound() {
-    setTimeout(
-        function() {
-            _yayAudioElement.play();
-        },
-        1000);
 }
 
 function unregisterTouchHandlers() {
@@ -214,22 +232,12 @@ function onTileTouched(event) {
         return;
     }
 
-    playTileSound(event.target);
+    _audio.playTileSound(event.target);
     moveTileToHotTarget(event.target);
     var allTargetsAreFull = advanceHotTarget();
     if (allTargetsAreFull) {
         checkAnswers();
     }
-}
-
-function playTileSound(tile) {
-    var endingId = tileIdToEndingId(tile.id);
-    _audioElements[endingId].play();
-}
-
-function tileIdToEndingId(tileId) {
-    var indexOfDash = tileId.indexOf('-');
-    return tileId.substring(indexOfDash + 1);
 }
 
 function tileIdToEnding(tileId) {
