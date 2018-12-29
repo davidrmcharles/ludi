@@ -34,7 +34,7 @@ function startGame() {
     registerTouchHandlers();
     _tiles.show();
     _timer.start();
-    hideElement(getStartButton());
+    _tools.hideElement(getStartButton());
     setHotTarget(document.getElementById('nominative-singular'));
 }
 
@@ -154,7 +154,7 @@ _tiles = {
     _show: function() {
         for (var child of this._pileElement.children) {
             if (child.classList.contains('tile')) {
-                showElement(child);
+                _tools.showElement(child);
             }
         }
     },
@@ -174,7 +174,7 @@ _tiles = {
     _hide: function() {
         for (var child of this._pileElement.children) {
             if (child.classList.contains('tile')) {
-                hideElement(child);
+                _tools.hideElement(child);
             }
         }
     },
@@ -187,12 +187,12 @@ function stopGame() {
     _tiles.hide();
     _timer.stop();
     unregisterTouchHandlers();
-    showElement(getWinBanner());
+    _tools.showElement(getWinBanner());
     _audio.playYaySound();
     setTimeout(
         function() {
-            hideElement(getWinBanner());
-            showElement(getStartButton());
+            _tools.hideElement(getWinBanner());
+            _tools.showElement(getStartButton());
         },
         3000);
 }
@@ -213,7 +213,7 @@ _timer = {
         this._elapsedTime = 0;
         this._timerElement = document.getElementById('timer');
         this._updateDisplay();
-        showElement(this._timerElement);
+        _tools.showElement(this._timerElement);
         this._timerId = setInterval(
             function() {
                 _timer._tick();
@@ -370,14 +370,6 @@ function removeHotness(target) {
     target.classList.remove('hot');
 }
 
-function hideElement(elem) {
-    elem.classList.add('hidden');
-}
-
-function showElement(elem) {
-    elem.classList.remove('hidden');
-}
-
 // Answer Checking
 
 function checkAnswers() {
@@ -438,3 +430,14 @@ function getWinBanner() {
     return document.getElementById('you-win');
 }
 
+_tools = {
+
+    hideElement: function(element) {
+        element.classList.add('hidden');
+    },
+
+    showElement: function(element) {
+        element.classList.remove('hidden');
+    }
+
+}
