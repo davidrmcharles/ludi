@@ -15,27 +15,18 @@
 
 // Initialization
 
-_targetIds = [];
-_answers = {};
-
 window.onload = function() {
-    var answersList = document.getElementById('answers');
-    for (child of answersList.children) {
-        _answers[child.id] = child.textContent;
-    }
-
-    _targetIds = Object.keys(_answers);
+    _targets.init();
 }
 
 // Starting the Game
 
 function startGame() {
     _audio.init();
-    registerTouchHandlers();
+    _targets.activate();
     _tiles.show();
     _timer.start();
     _tools.hideElement(getStartButton());
-    setHotTarget(document.getElementById('nominative-singular'));
 }
 
 _audio = {
@@ -108,10 +99,150 @@ _audio = {
 
 }
 
-function registerTouchHandlers() {
-    for (var target of getTargets()) {
-        target.addEventListener('click', onTargetTouched);
-    }
+_targets = {
+
+    _targetElements: null,
+    _targetIds: null,
+    _answers: {},
+
+    // Initialization
+
+    init: function() {
+        this._targetElements = document.getElementsByClassName('target');
+
+        var answersList = document.getElementById('answers');
+        for (child of answersList.children) {
+            this._answers[child.id] = child.textContent;
+        }
+
+        this._targetIds = Object.keys(this._answers);
+    },
+
+    // Activation
+
+    activate: function() {
+        this._registerTouchHandlers();
+        this.setHotTarget(document.getElementById('nominative-singular'));
+    },
+
+    _registerTouchHandlers: function() {
+        for (var target of this._targetElements) {
+            target.addEventListener('click', onTargetTouched);
+        }
+
+    },
+
+    // Deactivation
+
+    deactivate: function() {
+        this._unregisterTouchHandlers();
+    },
+
+    _unregisterTouchHandlers: function() {
+        for (var target of this._targetElements) {
+            target.removeEventListener('click', onTargetTouched);
+        }
+    },
+
+    // The Hot Target
+
+    getHotTarget: function() {
+        return document.getElementsByClassName('hot')[0];
+    },
+
+    setHotTarget: function(newHotTarget) {
+        for (var target of this._targetElements) {
+            if (target === newHotTarget) {
+                this._addHotness(target);
+            } else  {
+                this._removeHotness(target);
+            }
+        }
+    },
+
+    advanceHotTarget: function() {
+        // Remove hotness from the current hot target.
+        var hotTarget = this.getHotTarget();
+        if (hotTarget == null) {
+            return false;
+        }
+        this._removeHotness(hotTarget);
+
+        // Add hotness to the next target.
+        var nextHotTarget = this._nextEmptyOrErroneousTarget(hotTarget);
+        if (nextHotTarget != null) {
+            this._addHotness(nextHotTarget);
+            return false;
+        } else {
+            return true;
+        }
+    },
+
+    _nextEmptyOrErroneousTarget: function(target) {
+        var startIndex = (this._targetIds.indexOf(target.id) + 1) % this._targetIds.length;
+        var targetIds_ = this._targetIds.slice(startIndex).concat(
+            this._targetIds.slice(0, startIndex));
+        for (var index = 0; index < targetIds_.length; ++index) {
+            var target_ = document.getElementById(targetIds_[index]);
+            if (target_.firstChild == null) {
+                return target_;
+            } else if (target_.classList.contains('erroneous')) {
+                return target_;
+            }
+        }
+
+        return null;
+    },
+
+    _addHotness: function(element) {
+        element.classList.add('hot');
+    },
+
+    _removeHotness: function(element) {
+        element.classList.remove('hot');
+    },
+
+    // Answer Checking
+
+    checkAnswers: function() {
+        var correctness = [];
+        for (var target of this._targetElements) {
+            correctness.push(this._checkAnswer(target));
+        }
+
+        if (correctness.every(function(e) { return !!e; })) {
+            stopGame();
+        }
+    },
+
+    _checkAnswer: function(target) {
+        if (target.firstChild == null) {
+            this._addErroneousness(target);
+            return false;
+        }
+
+        var answer = this._answers[target.id];
+        var ending = tileIdToEnding(target.firstChild.id);
+        if (ending == answer) {
+            this._removeErroneousness(target);
+            return true;
+        } else {
+            this._addErroneousness(target);
+            return false;
+        }
+    },
+
+    _addErroneousness: function(target) {
+        if (!target.classList.contains('erroneous')) {
+            target.classList.add('erroneous');
+        }
+    },
+
+    _removeErroneousness: function(target) {
+        if (target.classList.contains('erroneous')) {
+            target.classList.remove('erroneous');
+        }
+    },
 
 }
 
@@ -144,7 +275,7 @@ _tiles = {
                 this._pileElement.children[Math.random() * i | 0]);
         }
 
-        for (var target of getTargets()) {
+        for (var target of _targets._targetElements) {
             moveTileToPile(target.firstChild);
         }
 
@@ -186,7 +317,7 @@ _tiles = {
 function stopGame() {
     _tiles.hide();
     _timer.stop();
-    unregisterTouchHandlers();
+    _targets.deactivate();
     _tools.showElement(getWinBanner());
     _audio.playYaySound();
     setTimeout(
@@ -195,12 +326,6 @@ function stopGame() {
             _tools.showElement(getStartButton());
         },
         3000);
-}
-
-function unregisterTouchHandlers() {
-    for (var target of getTargets()) {
-        target.removeEventListener('click', onTargetTouched);
-    }
 }
 
 _timer = {
@@ -246,7 +371,7 @@ function onTargetTouched(event) {
     }
 
     moveTileToPile(target.firstChild);
-    setHotTarget(target);
+    _targets.setHotTarget(target);
 }
 
 function onTileTouched(event) {
@@ -262,9 +387,9 @@ function onTileTouched(event) {
 
     _audio.playTileSound(event.target);
     moveTileToHotTarget(event.target);
-    var allTargetsAreFull = advanceHotTarget();
+    var allTargetsAreFull = _targets.advanceHotTarget();
     if (allTargetsAreFull) {
-        checkAnswers();
+        _targets.checkAnswers();
     }
 }
 
@@ -279,7 +404,7 @@ function tileIdToEnding(tileId) {
 }
 
 function moveTileToHotTarget(tile) {
-    var hotTarget = getHotTarget();
+    var hotTarget = _targets.getHotTarget();
     if (hotTarget == null) {
         return;
     }
@@ -293,7 +418,7 @@ function moveTileToHotTarget(tile) {
     hotTarget.appendChild(cloneOfTile);
     tile.classList.add('assigned')
 
-    removeErroneousness(hotTarget);
+    _targets._removeErroneousness(hotTarget);
 }
 
 function moveTileToPile(tile) {
@@ -316,111 +441,7 @@ function undecorateTileId(id) {
     return tokens.join('.');
 }
 
-// The Hot Target
-
-function setHotTarget(hotTarget) {
-    for (var target of getTargets()) {
-        if (target === hotTarget) {
-            addHotness(target);
-        } else  {
-            removeHotness(target);
-        }
-    }
-}
-
-function advanceHotTarget() {
-    // Remove hotness from the current hot target.
-    var hotTarget = getHotTarget();
-    if (hotTarget == null) {
-        return false;
-    }
-    removeHotness(hotTarget);
-
-    // Add hotness to the next target.
-    var nextHotTarget = nextEmptyOrErroneousTarget(hotTarget);
-    if (nextHotTarget != null) {
-        addHotness(nextHotTarget);
-        return false;
-    } else {
-        return true;
-    }
-}
-
-function nextEmptyOrErroneousTarget(target) {
-    var startIndex = (_targetIds.indexOf(target.id) + 1) % _targetIds.length;
-    var targetIds_ = _targetIds.slice(startIndex).concat(
-        _targetIds.slice(0, startIndex));
-    for (var index = 0; index < targetIds_.length; ++index) {
-        var target_ = document.getElementById(targetIds_[index]);
-        if (target_.firstChild == null) {
-            return target_;
-        } else if (target_.classList.contains('erroneous')) {
-            return target_;
-        }
-    }
-
-    return null;
-}
-
-function addHotness(target) {
-    target.classList.add('hot');
-}
-
-function removeHotness(target) {
-    target.classList.remove('hot');
-}
-
-// Answer Checking
-
-function checkAnswers() {
-    var correctness = [];
-    for (var target of getTargets()) {
-        correctness.push(checkAnswer(target));
-    }
-
-    if (correctness.every(function(e) { return !!e; })) {
-        stopGame();
-    }
-}
-
-function checkAnswer(target) {
-    if (target.firstChild == null) {
-        addErroneousness(target);
-        return false;
-    }
-
-    var answer = _answers[target.id];
-    var ending = tileIdToEnding(target.firstChild.id);
-    if (ending == answer) {
-        removeErroneousness(target);
-        return true;
-    } else {
-        addErroneousness(target);
-        return false;
-    }
-}
-
-function addErroneousness(target) {
-    if (!target.classList.contains('erroneous')) {
-        target.classList.add('erroneous');
-    }
-}
-
-function removeErroneousness(target) {
-    if (target.classList.contains('erroneous')) {
-        target.classList.remove('erroneous');
-    }
-}
-
 // Important Elements
-
-function getTargets() {
-    return document.getElementsByClassName('target');
-}
-
-function getHotTarget() {
-    return document.getElementsByClassName('hot')[0];
-}
 
 function getStartButton() {
     return document.getElementById('start-button');
