@@ -13,20 +13,43 @@
 // * Answer Checking
 // * Important Elements
 
-// Initialization
-
 window.onload = function() {
-    _targets.init();
+    ludus.init()
 }
 
-// Starting the Game
+ludus = {
 
-function startGame() {
-    _audio.init();
-    _targets.activate();
-    _tiles.show();
-    _timer.start();
-    _tools.hideElement(getStartButton());
+    _startButton: null,
+    _winBanner: null,
+
+    init: function() {
+        this._startButton = document.getElementById('start-button');
+        this._winBanner = document.getElementById('you-win');
+        _targets.init();
+    },
+
+    start: function() {
+        _audio.init();
+        _targets.activate();
+        _tiles.show();
+        _timer.start();
+        _tools.hideElement(this._startButton);
+    },
+
+    stop: function() {
+        _tiles.hide();
+        _timer.stop();
+        _targets.deactivate();
+        _tools.showElement(this._winBanner);
+        _audio.playYaySound();
+        setTimeout(
+            function() {
+                _tools.hideElement(ludus._winBanner);
+                _tools.showElement(ludus._startButton);
+            },
+            3000);
+    },
+
 }
 
 _audio = {
@@ -211,7 +234,7 @@ _targets = {
         }
 
         if (correctness.every(function(e) { return !!e; })) {
-            stopGame();
+            ludus.stop();
         }
     },
 
@@ -222,7 +245,7 @@ _targets = {
         }
 
         var answer = this._answers[target.id];
-        var ending = tileIdToEnding(target.firstChild.id);
+        var ending = this._tileIdToEnding(target.firstChild.id);
         if (ending == answer) {
             this._removeErroneousness(target);
             return true;
@@ -230,6 +253,16 @@ _targets = {
             this._addErroneousness(target);
             return false;
         }
+    },
+
+    _tileIdToEnding: function(tileId) {
+        var indexOfDash = tileId.indexOf('-');
+        var indexOfDot = tileId.indexOf('.');
+        if (indexOfDot < 0) {
+            tileId.length;
+        }
+        return tileId.substring(indexOfDash + 1, indexOfDot);
+
     },
 
     _addErroneousness: function(target) {
@@ -312,22 +345,6 @@ _tiles = {
 
 }
 
-// Stopping the Game
-
-function stopGame() {
-    _tiles.hide();
-    _timer.stop();
-    _targets.deactivate();
-    _tools.showElement(getWinBanner());
-    _audio.playYaySound();
-    setTimeout(
-        function() {
-            _tools.hideElement(getWinBanner());
-            _tools.showElement(getStartButton());
-        },
-        3000);
-}
-
 _timer = {
 
     _timerId: null,
@@ -364,7 +381,7 @@ _timer = {
 // Touch Event Handling
 
 function onTargetTouched(event) {
-
+    // Normalize target.
     var target = event.target;
     if (!target.classList.contains('target')) {
         target = target.parentElement;
@@ -391,16 +408,6 @@ function onTileTouched(event) {
     if (allTargetsAreFull) {
         _targets.checkAnswers();
     }
-}
-
-function tileIdToEnding(tileId) {
-    var indexOfDash = tileId.indexOf('-');
-    var indexOfDot = tileId.indexOf('.');
-    if (indexOfDot < 0) {
-        tileId.length;
-    }
-    return tileId.substring(indexOfDash + 1, indexOfDot);
-
 }
 
 function moveTileToHotTarget(tile) {
@@ -439,16 +446,6 @@ function undecorateTileId(id) {
     tokens = id.split('.');
     tokens.pop();
     return tokens.join('.');
-}
-
-// Important Elements
-
-function getStartButton() {
-    return document.getElementById('start-button');
-}
-
-function getWinBanner() {
-    return document.getElementById('you-win');
 }
 
 _tools = {
