@@ -32,8 +32,7 @@ window.onload = function() {
 function startGame() {
     _audio.init();
     registerTouchHandlers();
-    shuffleTiles();
-    showTiles();
+    _tiles.show();
     _timer.start();
     hideElement(getStartButton());
     setHotTarget(document.getElementById('nominative-singular'));
@@ -114,44 +113,78 @@ function registerTouchHandlers() {
         target.addEventListener('click', onTargetTouched);
     }
 
-    for (var tile of getTiles()) {
-        tile.addEventListener('click', onTileTouched);
-    }
 }
 
-function shuffleTiles() {
-    var pile = getPile();
-    for (var i = pile.children.length; i > 0; i--) {
-        pile.appendChild(pile.children[Math.random() * i | 0]);
-    }
+_tiles = {
 
-    for (var target of getTargets()) {
-        moveTileToPile(target.firstChild);
-    }
+    _tileElements: null,
+    _pileElement: null,
 
-    _audio.playShuffleSound();
-}
+    show: function() {
+        this._initElements();
+        this._registerTouchHandlers();
+        this._shuffle();
+        this._show();
+    },
 
-function showTiles() {
-    for (var child of getPile().children) {
-        if (child.classList.contains('tile')) {
-            showElement(child);
+    _initElements: function() {
+        this._tileElements = document.getElementsByClassName('tile');
+        this._pileElement = document.getElementById('pile');
+    },
+
+    _registerTouchHandlers: function() {
+        for (var tileElement of this._tileElements) {
+            tileElement.addEventListener('click', onTileTouched);
         }
-    }
-}
+    },
 
-function hideTiles() {
-    for (var child of getPile().children) {
-        if (child.classList.contains('tile')) {
-            hideElement(child);
+    _shuffle: function() {
+        for (var i = this._pileElement.children.length; i > 0; i--) {
+            this._pileElement.appendChild(
+                this._pileElement.children[Math.random() * i | 0]);
         }
-    }
+
+        for (var target of getTargets()) {
+            moveTileToPile(target.firstChild);
+        }
+
+        _audio.playShuffleSound();
+    },
+
+    _show: function() {
+        for (var child of this._pileElement.children) {
+            if (child.classList.contains('tile')) {
+                showElement(child);
+            }
+        }
+    },
+
+    hide: function() {
+        this._unregisterTouchHandlers();
+        this._hide();
+    },
+
+    _unregisterTouchHandlers: function() {
+        for (var tileElement of this._tileElements) {
+            tileElement.removeEventListener('click', onTileTouched);
+        }
+
+    },
+
+    _hide: function() {
+        for (var child of this._pileElement.children) {
+            if (child.classList.contains('tile')) {
+                hideElement(child);
+            }
+        }
+    },
+
 }
 
 // Stopping the Game
 
 function stopGame() {
-    hideTiles();
+    _tiles.hide();
     _timer.stop();
     unregisterTouchHandlers();
     showElement(getWinBanner());
@@ -167,10 +200,6 @@ function stopGame() {
 function unregisterTouchHandlers() {
     for (var target of getTargets()) {
         target.removeEventListener('click', onTargetTouched);
-    }
-
-    for (var tile of getTiles()) {
-        tile.removeEventListener('click', onTileTouched);
     }
 }
 
@@ -218,11 +247,10 @@ function onTargetTouched(event) {
 
     moveTileToPile(target.firstChild);
     setHotTarget(target);
-    showTiles();
 }
 
 function onTileTouched(event) {
-    if (event.target.parentElement != getPile()) {
+    if (event.target.parentElement != _tiles._pileElement) {
         // This event will be handled by onTargetTouched.
         return;
     }
@@ -394,20 +422,12 @@ function removeErroneousness(target) {
 
 // Important Elements
 
-function getPile() {
-    return document.getElementById('pile');
-}
-
 function getTargets() {
     return document.getElementsByClassName('target');
 }
 
 function getHotTarget() {
     return document.getElementsByClassName('hot')[0];
-}
-
-function getTiles() {
-    return document.getElementsByClassName('tile');
 }
 
 function getStartButton() {
