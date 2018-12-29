@@ -1,20 +1,9 @@
 // ludi.js
 //
-// The logic behind first-declension.html
-//
-// Internal Overview:
-//
-// * Initialization
-// * Starting the Game
-// * Stopping the Game
-// * The Timer
-// * Touch Event Handling
-// * The Hot Target
-// * Answer Checking
-// * Important Elements
+// Put the Latin endings into order!
 
 window.onload = function() {
-    ludus.init()
+    ludus.onLoadInit()
 }
 
 ludus = {
@@ -22,14 +11,15 @@ ludus = {
     _startButton: null,
     _winBanner: null,
 
-    init: function() {
+    onLoadInit: function() {
         this._startButton = document.getElementById('start-button');
         this._winBanner = document.getElementById('you-win');
-        _targets.init();
+        _targets.onLoadInit();
+        _tiles.onLoadInit();
     },
 
     start: function() {
-        _audio.init();
+        _audio.onStartInit();
         _targets.activate();
         _tiles.show();
         _timer.start();
@@ -50,6 +40,72 @@ ludus = {
             3000);
     },
 
+    onTileTouched: function(event) {
+        if (event.target.parentElement != _tiles._pileElement) {
+            // This event will be handled by onTargetTouched.
+            return;
+        }
+
+        if (event.target.classList.contains('assigned')) {
+            // The tile is already assigned.
+            return;
+        }
+
+        _audio.playTileSound(event.target);
+
+        this._moveTileToHotTarget(event.target);  // Does two things?
+
+        var allTargetsAreFull = _targets.advanceHotTarget();
+        if (allTargetsAreFull) {
+            _targets.checkAnswers();
+        }
+    },
+
+    _moveTileToHotTarget: function(tile) {
+        // Target-side changes
+        var hotTarget = _targets.getHotTarget();
+        cloneOfTile = tile.cloneNode();
+        cloneOfTile.id = this._decorateTileId(cloneOfTile.id);
+        cloneOfTile.style.padding = '0px';
+        cloneOfTile.style.border = 'none';
+        hotTarget.appendChild(cloneOfTile);
+        _targets._removeErroneousness(hotTarget);
+
+        // Tile-side changes
+        tile.classList.add('assigned')
+    },
+
+    _decorateTileId: function(id) {
+        return id + '.clone';
+    },
+
+    onTargetTouched: function(event) {
+        // Normalize target.
+        var target = event.target;
+        if (!target.classList.contains('target')) {
+            target = target.parentElement;
+        }
+
+        this._moveTileToPile(target.firstChild);
+        _targets.setHotTarget(target);
+    },
+
+    _moveTileToPile: function(tile) {
+        if (tile == null) {
+            return;
+        }
+
+        tile.parentElement.removeChild(tile);
+        tileId = this._undecorateTileId(tile.id);
+        document.getElementById(tileId).classList.remove('assigned');
+    },
+
+    _undecorateTileId: function(id) {
+        tokens = id.split('.');
+        tokens.pop();
+        return tokens.join('.');
+    },
+
 }
 
 _audio = {
@@ -59,7 +115,7 @@ _audio = {
     _shuffleAudioElement: null,
     _yayAudioElement: null,
 
-    init: function() {
+    onStartInit: function() {
         if (this._context != null) {
             return;
         }
@@ -127,10 +183,11 @@ _targets = {
     _targetElements: null,
     _targetIds: null,
     _answers: {},
+    _onTargetTouched: null,
 
     // Initialization
 
-    init: function() {
+    onLoadInit: function() {
         this._targetElements = document.getElementsByClassName('target');
 
         var answersList = document.getElementById('answers');
@@ -139,6 +196,8 @@ _targets = {
         }
 
         this._targetIds = Object.keys(this._answers);
+
+        this._onTargetTouched = ludus.onTargetTouched.bind(ludus);
     },
 
     // Activation
@@ -150,7 +209,7 @@ _targets = {
 
     _registerTouchHandlers: function() {
         for (var target of this._targetElements) {
-            target.addEventListener('click', onTargetTouched);
+            target.addEventListener('click', this._onTargetTouched);
         }
 
     },
@@ -163,7 +222,7 @@ _targets = {
 
     _unregisterTouchHandlers: function() {
         for (var target of this._targetElements) {
-            target.removeEventListener('click', onTargetTouched);
+            target.removeEventListener('click', this._onTargetTouched);
         }
     },
 
@@ -283,6 +342,11 @@ _tiles = {
 
     _tileElements: null,
     _pileElement: null,
+    _onTileTouched: null,
+
+    onLoadInit: function() {
+        this._onTileTouched = ludus.onTileTouched.bind(ludus);
+    },
 
     show: function() {
         this._initElements();
@@ -298,7 +362,7 @@ _tiles = {
 
     _registerTouchHandlers: function() {
         for (var tileElement of this._tileElements) {
-            tileElement.addEventListener('click', onTileTouched);
+            tileElement.addEventListener('click', this._onTileTouched);
         }
     },
 
@@ -309,7 +373,7 @@ _tiles = {
         }
 
         for (var target of _targets._targetElements) {
-            moveTileToPile(target.firstChild);
+            ludus._moveTileToPile(target.firstChild);
         }
 
         _audio.playShuffleSound();
@@ -330,7 +394,7 @@ _tiles = {
 
     _unregisterTouchHandlers: function() {
         for (var tileElement of this._tileElements) {
-            tileElement.removeEventListener('click', onTileTouched);
+            tileElement.removeEventListener('click', this._onTileTouched);
         }
 
     },
@@ -376,76 +440,6 @@ _timer = {
         this._timerElement.innerHTML = this._elapsedTime + ' second(s)';
     },
 
-}
-
-// Touch Event Handling
-
-function onTargetTouched(event) {
-    // Normalize target.
-    var target = event.target;
-    if (!target.classList.contains('target')) {
-        target = target.parentElement;
-    }
-
-    moveTileToPile(target.firstChild);
-    _targets.setHotTarget(target);
-}
-
-function onTileTouched(event) {
-    if (event.target.parentElement != _tiles._pileElement) {
-        // This event will be handled by onTargetTouched.
-        return;
-    }
-
-    if (event.target.classList.contains('assigned')) {
-        // The tile is already assigned.
-        return;
-    }
-
-    _audio.playTileSound(event.target);
-    moveTileToHotTarget(event.target);
-    var allTargetsAreFull = _targets.advanceHotTarget();
-    if (allTargetsAreFull) {
-        _targets.checkAnswers();
-    }
-}
-
-function moveTileToHotTarget(tile) {
-    var hotTarget = _targets.getHotTarget();
-    if (hotTarget == null) {
-        return;
-    }
-
-    moveTileToPile(hotTarget.firstChild);
-
-    cloneOfTile = tile.cloneNode();
-    cloneOfTile.id = decorateTileId(cloneOfTile.id);
-    cloneOfTile.style.padding = '0px';
-    cloneOfTile.style.border = 'none';
-    hotTarget.appendChild(cloneOfTile);
-    tile.classList.add('assigned')
-
-    _targets._removeErroneousness(hotTarget);
-}
-
-function moveTileToPile(tile) {
-    if (tile == null) {
-        return;
-    }
-
-    tile.parentElement.removeChild(tile);
-    tileId = undecorateTileId(tile.id);
-    document.getElementById(tileId).classList.remove('assigned');
-}
-
-function decorateTileId(id) {
-    return id + '.clone';
-}
-
-function undecorateTileId(id) {
-    tokens = id.split('.');
-    tokens.pop();
-    return tokens.join('.');
 }
 
 _tools = {
