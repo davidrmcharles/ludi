@@ -34,9 +34,9 @@ ludus = {
         _audio.playYaySound();
         setTimeout(
             function() {
-                _tools.hideElement(ludus._winBanner);
-                _tools.showElement(ludus._startButton);
-            },
+                _tools.hideElement(this._winBanner);
+                _tools.showElement(this._startButton);
+            }.bind(this),
             3000);
     },
 
@@ -162,8 +162,8 @@ _audio = {
     playYaySound: function() {
         setTimeout(
             function() {
-                _audio._yayAudioElement.play();
-            },
+                this._yayAudioElement.play();
+            }.bind(this),
             1000);
     },
 
@@ -422,8 +422,8 @@ _timer = {
         _tools.showElement(this._timerElement);
         this._timerId = setInterval(
             function() {
-                _timer._tick();
-            },
+                this._tick();
+            }.bind(this),
             1000);
     },
 
