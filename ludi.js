@@ -19,19 +19,19 @@ ludus = {
     },
 
     start: function() {
+        _tools.hideElement(this._startButton);
         _audio.onStartInit();
         _targets.activate();
         _tiles.show();
         _timer.start();
-        _tools.hideElement(this._startButton);
     },
 
     stop: function() {
-        _tiles.hide();
         _timer.stop();
+        _tiles.hide();
         _targets.deactivate();
         _tools.showElement(this._winBanner);
-        _audio.playYaySound();
+
         setTimeout(
             function() {
                 _tools.hideElement(this._winBanner);
@@ -51,59 +51,19 @@ ludus = {
             return;
         }
 
-        _audio.playTileSound(event.target);
-
-        this._moveTileToHotTarget(event.target);  // Does two things?
-
-        var allTargetsAreFull = _targets.advanceHotTarget();
-        if (allTargetsAreFull) {
-            _targets.checkAnswers();
-        }
-    },
-
-    _moveTileToHotTarget: function(tile) {
-        // Target-side changes
-        var hotTarget = _targets.getHotTarget();
-        cloneOfTile = tile.cloneNode();
-        cloneOfTile.id = this._decorateTileId(cloneOfTile.id);
-        cloneOfTile.style.padding = '0px';
-        cloneOfTile.style.border = 'none';
-        hotTarget.appendChild(cloneOfTile);
-        _targets._removeErroneousness(hotTarget);
-
-        // Tile-side changes
-        tile.classList.add('assigned')
-    },
-
-    _decorateTileId: function(id) {
-        return id + '.clone';
+        var cloneTileElement = _tiles.checkoutTile(event.target);
+        _targets.putTile(cloneTileElement);
     },
 
     onTargetTouched: function(event) {
         // Normalize target.
-        var target = event.target;
-        if (!target.classList.contains('target')) {
-            target = target.parentElement;
+        var targetElement = event.target;
+        if (!targetElement.classList.contains('target')) {
+            targetElement = targetElement.parentElement;
         }
 
-        this._moveTileToPile(target.firstChild);
-        _targets.setHotTarget(target);
-    },
-
-    _moveTileToPile: function(tile) {
-        if (tile == null) {
-            return;
-        }
-
-        tile.parentElement.removeChild(tile);
-        tileId = this._undecorateTileId(tile.id);
-        document.getElementById(tileId).classList.remove('assigned');
-    },
-
-    _undecorateTileId: function(id) {
-        tokens = id.split('.');
-        tokens.pop();
-        return tokens.join('.');
+        _tiles.returnTile(targetElement.firstChild);
+        _targets.clearTarget(targetElement);
     },
 
 }
@@ -203,8 +163,11 @@ _targets = {
     // Activation
 
     activate: function() {
+        for (var targetElement of this._targetElements) {
+            this.clearTarget(targetElement);
+        }
         this._registerTouchHandlers();
-        this.setHotTarget(document.getElementById('nominative-singular'));
+        this._setHotTarget(document.getElementById('nominative-singular'));
     },
 
     _registerTouchHandlers: function() {
@@ -226,13 +189,32 @@ _targets = {
         }
     },
 
-    // The Hot Target
+    // Tile Placement
 
-    getHotTarget: function() {
+    putTile: function(cloneTileElement) {
+        var hotTargetElement = this._getHotTarget();
+        hotTargetElement.appendChild(cloneTileElement);
+        this._removeErroneousness(hotTargetElement);
+
+        var allTargetsAreFull = this._advanceHotTarget();
+        if (allTargetsAreFull) {
+            this._checkAnswers();
+        }
+    },
+
+    clearTarget: function(targetElement) {
+        if (targetElement.firstChild == null) {
+            return;
+        }
+        targetElement.removeChild(targetElement.firstChild);
+        this._setHotTarget(targetElement);
+    },
+
+    _getHotTarget: function() {
         return document.getElementsByClassName('hot')[0];
     },
 
-    setHotTarget: function(newHotTarget) {
+    _setHotTarget: function(newHotTarget) {
         for (var target of this._targetElements) {
             if (target === newHotTarget) {
                 this._addHotness(target);
@@ -242,9 +224,9 @@ _targets = {
         }
     },
 
-    advanceHotTarget: function() {
+    _advanceHotTarget: function() {
         // Remove hotness from the current hot target.
-        var hotTarget = this.getHotTarget();
+        var hotTarget = this._getHotTarget();
         if (hotTarget == null) {
             return false;
         }
@@ -286,7 +268,7 @@ _targets = {
 
     // Answer Checking
 
-    checkAnswers: function() {
+    _checkAnswers: function() {
         var correctness = [];
         for (var target of this._targetElements) {
             correctness.push(this._checkAnswer(target));
@@ -372,8 +354,8 @@ _tiles = {
                 this._pileElement.children[Math.random() * i | 0]);
         }
 
-        for (var target of _targets._targetElements) {
-            ludus._moveTileToPile(target.firstChild);
+        for (var tileElement of this._tileElements) {
+            this._activateTile(tileElement);
         }
 
         _audio.playShuffleSound();
@@ -390,6 +372,7 @@ _tiles = {
     hide: function() {
         this._unregisterTouchHandlers();
         this._hide();
+        _audio.playYaySound();
     },
 
     _unregisterTouchHandlers: function() {
@@ -405,6 +388,40 @@ _tiles = {
                 _tools.hideElement(child);
             }
         }
+    },
+
+    checkoutTile: function(tileElement) {
+        cloneTileElement = this._cloneTile(tileElement);
+        tileElement.classList.add('assigned');
+        _audio.playTileSound(tileElement);
+        return cloneTileElement;
+    },
+
+    _cloneTile: function(tileElement) {
+        cloneTileElement = tileElement.cloneNode();
+        cloneTileElement.id = this._decorateTileId(cloneTileElement.id);
+        cloneTileElement.style.padding = '0px';
+        cloneTileElement.style.border = 'none';
+        return cloneTileElement;
+    },
+
+    _decorateTileId: function(id) {
+        return id + '.clone';
+    },
+
+    returnTile: function(cloneTileElement) {
+        originalTileId = this._undecorateTileId(cloneTileElement.id);
+        this._activateTile(document.getElementById(originalTileId));
+    },
+
+    _undecorateTileId: function(id) {
+        tokens = id.split('.');
+        tokens.pop();
+        return tokens.join('.');
+    },
+
+    _activateTile: function(tileElement) {
+        tileElement.classList.remove('assigned');
     },
 
 }
